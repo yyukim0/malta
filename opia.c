@@ -1,4 +1,3 @@
-//bibliotecas
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
@@ -32,7 +31,9 @@ int main(void) {
 	ALLEGRO_BITMAP* bottom_right_wall = al_load_bitmap("./parede - canto - direita.png");
 	ALLEGRO_BITMAP* bottom_left_wall = al_load_bitmap("./parede - canto - esquerda.png");
 	ALLEGRO_BITMAP* top_wall = al_load_bitmap("./parede - cima.png");
-
+	ALLEGRO_BITMAP* menu_start = al_load_bitmap("./menu - start.png");
+	ALLEGRO_BITMAP* menu_controls = al_load_bitmap("./menu - controls.png");
+	ALLEGRO_BITMAP* page_controls = al_load_bitmap("./controls.png");
 
 	//fila de eventos
 	ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
@@ -40,6 +41,10 @@ int main(void) {
 	al_register_event_source(event_queue, al_get_display_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_start_timer(timer);
+
+	//variaveis do menu
+	bool menu = true; //variavel boleana que vê se o menu está ativo
+	bool start = true;
 
 	//declarando X e Y da imagem do personagem
 	float frame = 0.f;
@@ -86,6 +91,7 @@ int main(void) {
 			}
 		}
 
+
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 		al_draw_bitmap_region(bg, 0, 0, 1280, 720, 0, 0, 0);
 		al_draw_bitmap_region(mainCharacter, 100 * (int)frame, current_frame_y, 90, 128, pos_x, pos_y, 0);
@@ -95,9 +101,45 @@ int main(void) {
 		al_draw_bitmap_region(left_wall, 0, 0, 18, 465, 325, 170, 0);
 		al_draw_bitmap_region(right_wall, 0, 0, 18, 465, 970, 170, 0);
 		al_draw_bitmap_region(bottom_wall, 0, 0, 672, 17, 320, 630, 0);
+		
+		if (menu) {
+
+			if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+				if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+					start = false; // controls se torna selecionado
+				}
+				else if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
+					start = true; // start se torna selecionado
+				}
+				else if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
+					if (start) {
+					
+						menu = false; // Fecha o menu e inicia o jogo
+					}
+					else {
+						// mostra a pagina de controles
+						al_draw_bitmap(page_controls, 0, 0, 0);
+						al_flip_display();
+						al_rest(5.0); // Espera 5 segundos na pagina de controles para voltar par ao menu principal
+					}
+				}
+			}
+
+			// Desenha o menu
+			al_clear_to_color(al_map_rgb(0, 0, 0)); // Limpa a tela
+			if (start) {
+				al_draw_bitmap_region(menu_start, 0, 0, 1280, 720, 0, 0, 0);
+			}
+			else {
+				al_draw_bitmap_region(menu_controls, 0, 0, 1280, 720, 0, 0, 0);
+			}
+
+		}
+
 		al_flip_display();
 	}
 
+	al_destroy_bitmap(menu_start);
 	al_destroy_bitmap(top_wall);
 	al_destroy_bitmap(bottom_left_wall);
 	al_destroy_bitmap(bottom_right_wall);
