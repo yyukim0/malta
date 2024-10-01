@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
@@ -18,7 +19,7 @@ typedef struct {
     ALLEGRO_FONT* font;
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
-    ALLEGRO_BITMAP* bg, * bottom_wall, * left_wall, * right_wall, * bottom_right_wall, * bottom_left_wall, * top_wall;
+    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima , * tv;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
@@ -28,7 +29,7 @@ typedef struct {
     bool menu;
     bool start;
     int pos_x, pos_y;
-    int top_wall_y, bottom_wall_y, left_wall_x, right_wall_x;
+    int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
 } GameState;
 
 // Função para inicializar Allegro e os componentes
@@ -41,20 +42,21 @@ void init_allegro(GameAssets* assets) {
 
     assets->display = al_create_display(1280, 720);
     al_set_window_position(assets->display, 200, 200);
-    al_set_window_title(assets->display, "Opia");
+    al_set_window_title(assets->display, "opia");
 
     assets->font = al_load_font("./YumeNikkiTitleScreen.ttf", 25, 0);
     assets->timer = al_create_timer(1.0 / 60.0);
 
     // Carregando imagens
+    assets->tv = al_load_bitmap("./televisão.png");
     assets->mainCharacter = al_load_bitmap("./mc - precisamos decidir um nome.png");
     assets->bg = al_load_bitmap("./quarto inteiro.png");
-    assets->bottom_wall = al_load_bitmap("./parede - baixo.png");
-    assets->left_wall = al_load_bitmap("./parede - lado.png");
-    assets->right_wall = al_load_bitmap("./parede - lado.png");
-    assets->bottom_right_wall = al_load_bitmap("./parede - canto - direita.png");
-    assets->bottom_left_wall = al_load_bitmap("./parede - canto - esquerda.png");
-    assets->top_wall = al_load_bitmap("./parede - cima.png");
+    assets->parede_baixa = al_load_bitmap("./parede - baixo.png");
+    assets->parede_esquerda = al_load_bitmap("./parede - lado.png");
+    assets->parede_direita = al_load_bitmap("./parede - lado.png");
+    assets->parede_direita_baixo = al_load_bitmap("./parede - canto - direita.png");
+    assets->parede_esquerda_baixo = al_load_bitmap("./parede - canto - esquerda.png");
+    assets->parede_cima = al_load_bitmap("./parede - cima.png");
     assets->menu_start = al_load_bitmap("./menu - start.png");
     assets->menu_controls = al_load_bitmap("./menu - controls.png");
     assets->page_controls = al_load_bitmap("./controls.png");
@@ -69,17 +71,18 @@ void init_allegro(GameAssets* assets) {
 // Função para limpar os recursos
 void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->menu_start);
-    al_destroy_bitmap(assets->top_wall);
-    al_destroy_bitmap(assets->bottom_left_wall);
-    al_destroy_bitmap(assets->bottom_right_wall);
-    al_destroy_bitmap(assets->right_wall);
-    al_destroy_bitmap(assets->left_wall);
+    al_destroy_bitmap(assets->parede_cima);
+    al_destroy_bitmap(assets->parede_esquerda_baixo);
+    al_destroy_bitmap(assets->parede_direita_baixo);
+    al_destroy_bitmap(assets->parede_direita);
+    al_destroy_bitmap(assets->parede_esquerda);
     al_destroy_bitmap(assets->mainCharacter);
-    al_destroy_bitmap(assets->bottom_wall);
+    al_destroy_bitmap(assets->parede_baixa);
     al_destroy_bitmap(assets->bg);
     al_destroy_font(assets->font);
     al_destroy_display(assets->display);
     al_destroy_event_queue(assets->event_queue);
+    al_destroy_bitmap(assets->tv);
 }
 
 // Função para inicializar o estado do jogo
@@ -90,35 +93,35 @@ void init_game_state(GameState* state) {
     state->pos_y = 360;
     
     // Posições das paredes para impedir que o personagem as atravesse
-    state->top_wall_y = 200;
-    state->bottom_wall_y = 630;
-    state->left_wall_x = 343;
-    state->right_wall_x = 970;
+    state->parede_cima_y = 200;
+    state->parede_baixa_y = 630;
+    state->parede_esquerda_x = 343;
+    state->parede_direita_x = 970;
 }
 
 // Função para atualizar a posição do personagem
 void update_position(Character* character, GameState* state, int keycode) {
     if (keycode == ALLEGRO_KEY_RIGHT) {
         character->frame_y = 128; 
-        if (state->pos_x + 90 < state->right_wall_x) {
+        if (state->pos_x + 90 < state->parede_direita_x) {
             state->pos_x += 10;
         }
     }
     else if (keycode == ALLEGRO_KEY_LEFT) {
         character->frame_y = 128 * 3;
-        if (state->pos_x > state->left_wall_x) {
+        if (state->pos_x > state->parede_esquerda_x) {
             state->pos_x -= 10;
         }
     }
     else if (keycode == ALLEGRO_KEY_DOWN) {
         character->frame_y = 128 * 2;
-        if (state->pos_y + 128 < state->bottom_wall_y) {
+        if (state->pos_y + 128 < state->parede_baixa_y) {
             state->pos_y += 10;
         }
     }
     else if (keycode == ALLEGRO_KEY_UP) {
         character->frame_y = 0;
-        if (state->pos_y > state->top_wall_y) {
+        if (state->pos_y > state->parede_cima_y) {
             state->pos_y -= 10;
         }
     }
@@ -166,13 +169,14 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         // Desenha o jogo
         al_clear_to_color(al_map_rgb(0, 0, 0));
         al_draw_bitmap_region(assets->bg, -30, 0, 1280, 720, 0, 50, 0);
-        al_draw_bitmap_region(assets->top_wall, 0, 0, 503, 145, 405, 108, 0);
-        al_draw_bitmap_region(assets->bottom_right_wall, 0, 0, 69, 210, 905, 108, 0);
-        al_draw_bitmap_region(assets->bottom_left_wall, 0, 0, 69, 210, 340, 108, 0);
-        al_draw_bitmap_region(assets->left_wall, 0, 0, 18, 465, 325, 170, 0);
-        al_draw_bitmap_region(assets->right_wall, 0, 0, 18, 465, 970, 170, 0);
-        al_draw_bitmap_region(assets->bottom_wall, 0, 0, 672, 17, 320, 630, 0);
+        al_draw_bitmap_region(assets->parede_cima, 0, 0, 503, 145, 405, 108, 0);
+        al_draw_bitmap_region(assets->parede_direita_baixo, 0, 0, 69, 210, 905, 108, 0);
+        al_draw_bitmap_region(assets->parede_esquerda_baixo, 0, 0, 69, 210, 340, 108, 0);
+        al_draw_bitmap_region(assets->parede_esquerda, 0, 0, 18, 465, 325, 170, 0);
+        al_draw_bitmap_region(assets->parede_direita, 0, 0, 18, 465, 970, 170, 0);
+        al_draw_bitmap_region(assets->parede_baixa, 0, 0, 672, 17, 320, 630, 0);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
+        al_draw_bitmap_region(assets->tv, 0, 0, 124, 155, 200, 200, 0);
     }
 }
 
