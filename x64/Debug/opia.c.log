@@ -1,0 +1,8 @@
+﻿  opia.c
+opia.obj : error LNK2019: unresolved external symbol __imp_al_load_font referenced in function init_allegro
+opia.obj : error LNK2019: unresolved external symbol __imp_al_destroy_font referenced in function destroy_assets
+opia.obj : error LNK2019: unresolved external symbol __imp_al_init_font_addon referenced in function init_allegro
+opia.obj : error LNK2019: unresolved external symbol __imp_al_init_ttf_addon referenced in function init_allegro
+opia.obj : error LNK2019: unresolved external symbol __imp_al_init_image_addon referenced in function init_allegro
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+C:\Users\lfran\source\repos\opia.c\x64\Debug\opia.c.exe : fatal error LNK1120: 6 unresolved externals

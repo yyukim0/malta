@@ -513,4 +513,9 @@ int main(void) {
 
     destroy_assets(&assets);
     return 0;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e919f0361a57f9e238035d46aeb2515db53a1129
+>>>>>>> 2dabc6a648ac2d49615354e4c99ee502ba3f5d72
