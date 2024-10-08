@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Arquivos de Origem">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Arquivos de Recurso">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="almofada.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="caixa.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="cama.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="chat-box.jpeg">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="controls.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="dialog-mc.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="estante.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="exemplo-dialogo.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="janela.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="mc - precisamos decidir um nome.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="menu - controls.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="menu - start.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="menu.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="mesa.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede - baixo.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede - canto - direita.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede - canto - esquerda.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede - cima.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede - lado.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede curta.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="piso.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="porta.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="quarto inteiro.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="tapete.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="televisao.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="tileset.PNG">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Ib OST_ Prelude in C Minor (Extended).mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="YumeNikkiTitleScreen.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="opia.c">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
