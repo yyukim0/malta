@@ -18,22 +18,23 @@ typedef struct {
     ALLEGRO_FONT* fonte_grande, * fonte_pequena;
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
-    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta;
+    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, *porta_aberta;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
 
-// Struct do Menu, posiÁ„o
+// Struct do Menu, posi√ß√£o
 typedef struct {
     bool menu;
     bool start;
     int pos_x, pos_y;
     int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
     bool key_up, key_down, key_left, key_right; // Flags para controle das teclas de movimento
+    bool porta_aberta;  // Nova vari√°vel para controlar o estado da porta
     bool chat;
 } GameState;
 
-// FunÁ„o para inicializar Allegro e os componentes
+// Fun√ß√£o para inicializar Allegro e os componentes
 void init_allegro(GameAssets* assets) {
     al_init();
     al_init_font_addon();
@@ -78,7 +79,7 @@ void init_allegro(GameAssets* assets) {
 
 }
 
-// FunÁ„o para limpar os recursos
+// Fun√ß√£o para limpar os recursos
 void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->menu_start);
     al_destroy_bitmap(assets->chat_box);
@@ -101,15 +102,15 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->porta);
 }
 
-// FunÁ„o para inicializar o estado do jogo
+// Fun√ß√£o para inicializar o estado do jogo
 void init_game_state(GameState* state) {
-    state->menu = true; // ComeÁa com o menu ativo
-    state->start = true; // O cursor do menu comeÁa na opÁ„o 'Start'
+    state->menu = true; // Come√ßa com o menu ativo
+    state->start = true; // O cursor do menu come√ßa na op√ß√£o 'Start'
     state->pos_x = 640;
     state->pos_y = 360;
 
-    // PosiÁıes das paredes para impedir que o personagem as atravesse
-    state->parede_cima_y = 180;  // Ajuste da colis„o na parte superior
+    // Posi√ß√µes das paredes para impedir que o personagem as atravesse
+    state->parede_cima_y = 180;  // Ajuste da colis√£o na parte superior
     state->parede_baixa_y = 630;
     state->parede_esquerda_x = 343;
     state->parede_direita_x = 970;
@@ -119,51 +120,67 @@ void init_game_state(GameState* state) {
     state->key_down = false;
     state->key_left = false;
     state->key_right = false;
+    state->porta_aberta = false;  // Inicializa a porta como fechada
 }
 
-// FunÁ„o para atualizar a posiÁ„o do personagem
+// Fun√ß√£o para atualizar a posi√ß√£o do personagem
 void update_position(Character* character, GameState* state, GameAssets* assets) {
-    bool moving = false; // Verifica se o personagem est· se movendo
+    bool moving = false; // Verifica se o personagem est√° se movendo
+    
+    // Dimens√µes da porta
+    int porta_x = 460;
+    int porta_y = 127;
+    int porta_width = al_get_bitmap_width(assets->porta) * 5;
+    int porta_height = al_get_bitmap_height(assets->porta) * 5;
 
-    // Dimensıes e posiÁ„o da televis„o
+    // Se a porta n√£o estiver aberta, impedir a passagem do personagem pela porta
+    if (!state->porta_aberta && state->pos_x + 90 > porta_x && state->pos_x < porta_x + porta_width &&
+        state->pos_y + 128 > porta_y && state->pos_y < porta_y + porta_height) {
+        // Impede movimento na dire√ß√£o da porta fechada
+        if (state->key_up || state->key_down || state->key_left || state->key_right) {
+            return;
+        }
+    }
+
+    // Dimens√µes e posi√ß√£o da televis√£o
     int tv_x = 337;
     int tv_y = 200;
     int tv_width = 95;
     int tv_height = 50;
 
-    // Dimensıes do canto superior direito (ajustadas)
+    // Dimens√µes do canto superior direito (ajustadas)
     int canto_superior_direito_x_min = 900; 
     int canto_superior_direito_x_max = 1100; 
     int canto_superior_direito_y_min = 180; 
     int canto_superior_direito_y_max = 240; 
 
-    // Dimensıes da cama
+    // Dimens√µes da cama
     int cama_x = 860; //830
     int cama_y = 150; //250
     int cama_width = al_get_bitmap_width(assets->cama) * 5;
     int cama_height = al_get_bitmap_height(assets->cama) * 5;
 
-    printf("PosiÁ„o do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
+    printf("Posi√ß√£o do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
 
-    //sÛ reza, se der bug vai para a igreja se benzer
+    //s√≥ reza, se der bug vai para a igreja se benzer
 
-    //dimensıes da esntante
+    //dimens√µes da esntante
 
     int estante_x = 680;
     int estante_y = 30;
     int estante_width = al_get_bitmap_width(assets->estante) * 5;
     int estante_height = al_get_bitmap_height(assets->estante) * 5;
 
-    //dimensıes mesa
+    //dimens√µes mesa
 
     int mesa_x = 550;
     int mesa_y = 20;
     int mesa_width = al_get_bitmap_width(assets->mesa) * 5;
     int mesa_height = al_get_bitmap_height(assets->mesa) * 5;
      
-    // Verifica colis„o somente na direÁ„o que o personagem est· se movendo
+    // Verifica colis√£o somente na dire√ß√£o que o personagem est√° se movendo
     if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
-        // Colis„o ao mover para a direita (TV + cama + canto superior direito + estante + mesa)
+        // Colis√£o ao mover para a direita (TV + cama + canto superior direito + estante + mesa)
         if (!(state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
             state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
             !(state->pos_x + 90 >= cama_x && state->pos_x + 90 <= cama_x + cama_width &&
@@ -174,13 +191,13 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height) &&
             !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
                 state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)) {
-            character->frame_y = 128;  // DireÁ„o direita
+            character->frame_y = 128;  // Dire√ß√£o direita
             state->pos_x += 5;
             moving = true;
         }
     }
     if (state->key_left && state->pos_x > state->parede_esquerda_x) {
-        // Colis„o ao mover para a esquerda (TV + cama + estante + mesa)
+        // Colis√£o ao mover para a esquerda (TV + cama + estante + mesa)
         if (!(state->pos_x <= tv_x + tv_width && state->pos_x >= tv_x &&
             state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
             !(state->pos_x <= cama_x + cama_width && state->pos_x >= cama_x &&
@@ -189,26 +206,26 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) &&
             !(state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
                 state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)) {
-            character->frame_y = 128 * 3;  // DireÁ„o esquerda
+            character->frame_y = 128 * 3;  // Dire√ß√£o esquerda
             state->pos_x -= 5;
             moving = true;
         }
     }
     if (state->key_down && state->pos_y + 128 < state->parede_baixa_y) {
-        // Colis„o ao mover para baixo (TV + cama + canto superior direito + estamte)
+        // Colis√£o ao mover para baixo (TV + cama + canto superior direito + estamte)
         if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
             state->pos_y + 128 >= tv_y && state->pos_y + 128 <= tv_y + tv_height) &&
             !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
                 state->pos_y + 128 >= cama_y && state->pos_y + 128 <= cama_y + cama_height) &&
             !(state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
                 state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)) {
-            character->frame_y = 128 * 2;  // DireÁ„o para baixo
+            character->frame_y = 128 * 2;  // Dire√ß√£o para baixo
             state->pos_y += 5;
             moving = true;
         }
     }
     if (state->key_up && state->pos_y > state->parede_cima_y) {
-        // Colis„o ao mover para cima (TV + cama + canto superior direito + estante + mesa)
+        // Colis√£o ao mover para cima (TV + cama + canto superior direito + estante + mesa)
         if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
             state->pos_y <= tv_y + tv_height && state->pos_y >= tv_y) &&
             !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
@@ -219,14 +236,14 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 state->pos_y <= estante_y + estante_height && state->pos_y >= estante_y) &&
             !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
                 state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)) {
-            character->frame_y = 0;  // DireÁ„o para cima
+            character->frame_y = 0;  // Dire√ß√£o para cima
             state->pos_y -= 5;
             moving = true;
         }
     }
 
 
-    // Atualiza a animaÁ„o do personagem apenas se ele estiver se movendo
+    // Atualiza a anima√ß√£o do personagem apenas se ele estiver se movendo
     if (moving) {
         character->frame += 0.2f;
         if (character->frame > 3) {
@@ -234,12 +251,24 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
         }
     }
     else {
-        // Se n„o estiver se movendo, o personagem mantÈm o quadro 0 (parado)
+        // Se n√£o estiver se movendo, o personagem mant√©m o quadro 0 (parado)
         character->frame = 0;
     }
 }
 
-// FunÁ„o para lidar com as interaÁıes no menu
+// Nova fun√ß√£o para controlar a intera√ß√£o com a porta
+void handle_porta_interaction(GameState* state) {
+    if (state->pos_x >= 460 && state->pos_x <= 560 && state->pos_y >= 127 && state->pos_y <= 227) {
+        if (state->porta_aberta) {
+            state->porta_aberta = false;  // Fechar a porta
+        }
+        else {
+            state->porta_aberta = true;   // Abrir a porta
+        }
+    }
+}
+
+// Fun√ß√£o para lidar com as intera√ß√µes no menu
 void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode) {
     if (keycode == ALLEGRO_KEY_DOWN) {
         state->start = false; // Alterna para 'Controls'
@@ -252,7 +281,7 @@ void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode)
             state->menu = false; // Se 'Start' estiver selecionado, sai do menu
         }
         else {
-            // Mostra a p·gina de controles
+            // Mostra a p√°gina de controles
             al_draw_bitmap(assets->page_controls, 0, 0, 0);
             al_flip_display();
             al_rest(5.0); // Exibe por 5 segundos
@@ -260,7 +289,7 @@ void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode)
     }
 }
 
-// FunÁ„o para desenhar o cen·rio, personagem e menu
+// Fun√ß√£o para desenhar o cen√°rio, personagem e menu
 void draw_game(GameAssets* assets, GameState* state, Character* character) {
     if (state->menu) {
         // Desenha o menu
@@ -270,6 +299,13 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         }
         else {
             al_draw_bitmap_region(assets->menu_controls, 0, 0, 1280, 720, 0, 0, 0);
+        }
+         // Desenha a porta com base em seu estado
+        if (state->porta_aberta) {
+            al_draw_bitmap_region(assets->porta, 0, 0, 128, 128, 460, 127, 0);  // Porta aberta
+        }
+        else {
+            al_draw_bitmap_region(assets->porta, 0, 0, 128, 128, 460, 127, 0);  // Porta fechada
         }
     }
     else {
@@ -309,7 +345,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
 }
 
 
-// Calcula a dist‚ncia entre o jogador e o objeto
+// Calcula a dist√¢ncia entre o jogador e o objeto
 int player_interacao(Character* character, GameState* state, GameAssets* assets) {
     int range_interacao = 120; 
 
@@ -321,7 +357,7 @@ int player_interacao(Character* character, GameState* state, GameAssets* assets)
     return (dx_estante * dx_estante + dy_estante * dy_estante) <= (range_interacao * range_interacao);
 }
 
-// FunÁ„o principal
+// Fun√ß√£o principal
 int main(void) {
     GameAssets assets;
     GameState state;
@@ -348,12 +384,16 @@ int main(void) {
                 if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) state.key_down = true;
                 if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) state.key_left = true;
                 if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) state.key_right = true;
+                
+                // Verifica se o jogador pressiona a tecla para interagir com a porta
+                if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                    handle_porta_interaction(&state);  // Abre/fecha a porta
 
-                // interaÁ„o da estante
+                // intera√ß√£o da estante
                 if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
                     if (player_interacao(&character, &state, &assets)) {
-                        printf("dentro da interaÁ„o\n");
-                        state.chat = true; // Define a flag para a chat-box visÌvel
+                        printf("dentro da intera√ß√£o\n");
+                        state.chat = true; // Define a flag para a chat-box vis√≠vel
                     }
                 }
             }
