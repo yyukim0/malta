@@ -15,11 +15,11 @@ typedef struct {
 // Struct do Mapa, Fonte
 typedef struct {
     ALLEGRO_DISPLAY* display;
-    ALLEGRO_FONT* font;
+    ALLEGRO_FONT* fonte_grande, * fonte_pequena;
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
     ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta;
-    ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls;
+    ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
 
@@ -30,6 +30,7 @@ typedef struct {
     int pos_x, pos_y;
     int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
     bool key_up, key_down, key_left, key_right; // Flags para controle das teclas de movimento
+    bool chat;
 } GameState;
 
 // Função para inicializar Allegro e os componentes
@@ -44,7 +45,8 @@ void init_allegro(GameAssets* assets) {
     al_set_window_position(assets->display, 200, 200);
     al_set_window_title(assets->display, "opia");
 
-    assets->font = al_load_font("./YumeNikkiTitleScreen.ttf", 25, 0);
+    assets->fonte_grande = al_load_font("./YumeNikkiTitleScreen.ttf", 50, 0);
+    assets->fonte_pequena = al_load_font("./YumeNikkiTitleScreen.ttf", 40, 0);
     assets->timer = al_create_timer(1.0 / 30.0);
 
     // Carregando imagens
@@ -60,10 +62,12 @@ void init_allegro(GameAssets* assets) {
     assets->parede_cima = al_load_bitmap("./parede - cima.png");
     assets->menu_start = al_load_bitmap("./menu - start.png");
     assets->menu_controls = al_load_bitmap("./menu - controls.png");
+    assets->chat_box = al_load_bitmap("./chat-box.jpeg");
     assets->page_controls = al_load_bitmap("./controls.png");
     assets->estante = al_load_bitmap("./estante.png");
     assets->mesa = al_load_bitmap("./mesa.png");
     assets->porta = al_load_bitmap("./porta.png");
+    
     
 
     assets->event_queue = al_create_event_queue();
@@ -71,11 +75,13 @@ void init_allegro(GameAssets* assets) {
     al_register_event_source(assets->event_queue, al_get_timer_event_source(assets->timer));
     al_register_event_source(assets->event_queue, al_get_keyboard_event_source());
     al_start_timer(assets->timer);
+
 }
 
 // Função para limpar os recursos
 void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->menu_start);
+    al_destroy_bitmap(assets->chat_box);
     al_destroy_bitmap(assets->parede_cima);
     al_destroy_bitmap(assets->parede_esquerda_baixo);
     al_destroy_bitmap(assets->parede_direita_baixo);
@@ -84,7 +90,8 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->mainCharacter);
     al_destroy_bitmap(assets->parede_baixa);
     al_destroy_bitmap(assets->bg);
-    al_destroy_font(assets->font);
+    al_destroy_font(assets->fonte_grande);
+    al_destroy_font(assets->fonte_pequena);
     al_destroy_display(assets->display);
     al_destroy_event_queue(assets->event_queue);
     al_destroy_bitmap(assets->tv);
@@ -125,10 +132,10 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
     int tv_height = 50;
 
     // Dimensões do canto superior direito (ajustadas)
-    int canto_superior_direito_x_min = 900; // Ajuste conforme necessário
-    int canto_superior_direito_x_max = 1100; // Ajuste conforme necessário
-    int canto_superior_direito_y_min = 180; // Ajuste conforme necessário
-    int canto_superior_direito_y_max = 240; // Ajuste conforme necessário
+    int canto_superior_direito_x_min = 900; 
+    int canto_superior_direito_x_max = 1100; 
+    int canto_superior_direito_y_min = 180; 
+    int canto_superior_direito_y_max = 240; 
 
     // Dimensões da cama
     int cama_x = 860; //830
@@ -286,7 +293,32 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_get_bitmap_height(assets->porta) * 5, 460, 127, 0);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
 
+        // Desenha a chat box se a flag estiver ativada
+        if (state->chat) {
+            al_draw_scaled_bitmap(assets->chat_box, 0, 0, al_get_bitmap_width(assets->chat_box), al_get_bitmap_height(assets->chat_box),
+                225, 500, al_get_bitmap_width(assets->chat_box) * 1.25, al_get_bitmap_height(assets->chat_box) * 1.25, 0);
+
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "qual a raiz quadrada de 4?");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, "4");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, "2");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, "3");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, "5");
+
+        }
     }
+}
+
+
+// Calcula a distância entre o jogador e o objeto
+int player_interacao(Character* character, GameState* state, GameAssets* assets) {
+    int range_interacao = 120; 
+
+    int estante_x = 660;
+    int estante_y = 125;
+
+    int dx_estante = state->pos_x - estante_x;
+    int dy_estante = state->pos_y - estante_y;
+    return (dx_estante * dx_estante + dy_estante * dy_estante) <= (range_interacao * range_interacao);
 }
 
 // Função principal
@@ -294,6 +326,7 @@ int main(void) {
     GameAssets assets;
     GameState state;
     Character character = { 640, 360, 0, 128, 0 };
+    state.chat = false;
 
     init_allegro(&assets);
     init_game_state(&state);
@@ -315,6 +348,14 @@ int main(void) {
                 if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) state.key_down = true;
                 if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) state.key_left = true;
                 if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) state.key_right = true;
+
+                // interação da estante
+                if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                    if (player_interacao(&character, &state, &assets)) {
+                        printf("dentro da interação\n");
+                        state.chat = true; // Define a flag para a chat-box visível
+                    }
+                }
             }
         }
         else if (event.type == ALLEGRO_EVENT_KEY_UP) {
@@ -328,6 +369,7 @@ int main(void) {
         if (!state.menu) {
             update_position(&character, &state, &assets);
         }
+        
 
         draw_game(&assets, &state, &character);
         al_flip_display();
