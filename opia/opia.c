@@ -18,7 +18,7 @@ typedef struct {
     ALLEGRO_FONT* fonte_grande, * fonte_pequena;
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
-    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, *_aberta;
+    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
@@ -30,10 +30,7 @@ typedef struct {
     int pos_x, pos_y;
     int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
     bool key_up, key_down, key_left, key_right; // Flags para controle das teclas de movimento
-    bool porta_aberta;  // Nova variável para controlar o estado da porta
     bool chat;
-    char message[100];
-    char resposta1[100], resposta2[100], resposta3[100], resposta4[100]
 } GameState;
 
 // Função para inicializar Allegro e os componentes
@@ -70,8 +67,8 @@ void init_allegro(GameAssets* assets) {
     assets->estante = al_load_bitmap("./estante.png");
     assets->mesa = al_load_bitmap("./mesa.png");
     assets->porta = al_load_bitmap("./porta.png");
-    
-    
+
+
 
     assets->event_queue = al_create_event_queue();
     al_register_event_source(assets->event_queue, al_get_display_event_source(assets->display));
@@ -122,33 +119,11 @@ void init_game_state(GameState* state) {
     state->key_down = false;
     state->key_left = false;
     state->key_right = false;
-    state->porta_aberta = false;  // Inicializa a porta como fechada
-
-    strcpy(state->message, "");
-    strcpy(state->resposta1, "");
-    strcpy(state->resposta2, "");
-    strcpy(state->resposta3, "");
-    strcpy(state->resposta4, "");
 }
 
 // Função para atualizar a posição do personagem
 void update_position(Character* character, GameState* state, GameAssets* assets) {
     bool moving = false; // Verifica se o personagem está se movendo
-    
-    // Dimensões da porta
-    int porta_x = 460;
-    int porta_y = 127;
-    int porta_width = al_get_bitmap_width(assets->porta) * 5;
-    int porta_height = al_get_bitmap_height(assets->porta) * 5;
-
-    // Se a porta não estiver aberta, impedir a passagem do personagem pela porta
-    if (!state->porta_aberta && state->pos_x + 90 > porta_x && state->pos_x < porta_x + porta_width &&
-        state->pos_y + 128 > porta_y && state->pos_y < porta_y + porta_height) {
-        // Impede movimento na direção da porta fechada
-        if (state->key_up || state->key_down || state->key_left || state->key_right) {
-            return;
-        }
-    }
 
     // Dimensões e posição da televisão
     int tv_x = 337;
@@ -157,10 +132,10 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
     int tv_height = 50;
 
     // Dimensões do canto superior direito (ajustadas)
-    int canto_superior_direito_x_min = 900; 
-    int canto_superior_direito_x_max = 1100; 
-    int canto_superior_direito_y_min = 180; 
-    int canto_superior_direito_y_max = 240; 
+    int canto_superior_direito_x_min = 900;
+    int canto_superior_direito_x_max = 1100;
+    int canto_superior_direito_y_min = 180;
+    int canto_superior_direito_y_max = 240;
 
     // Dimensões da cama
     int cama_x = 860; //830
@@ -185,7 +160,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
     int mesa_y = 20;
     int mesa_width = al_get_bitmap_width(assets->mesa) * 5;
     int mesa_height = al_get_bitmap_height(assets->mesa) * 5;
-     
+
     // Verifica colisão somente na direção que o personagem está se movendo
     if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
         // Colisão ao mover para a direita (TV + cama + canto superior direito + estante + mesa)
@@ -264,18 +239,6 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
     }
 }
 
-// Nova função para controlar a interação com a porta
-void handle_porta_interaction(GameState* state) {
-    if (state->pos_x >= 460 && state->pos_x <= 560 && state->pos_y >= 127 && state->pos_y <= 227) {
-        if (state->porta_aberta) {
-            state->porta_aberta = false;  // Fechar a porta
-        }
-        else {
-            state->porta_aberta = true;   // Abrir a porta
-        }
-    }
-}
-
 // Função para lidar com as interações no menu
 void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode) {
     if (keycode == ALLEGRO_KEY_DOWN) {
@@ -308,13 +271,6 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         else {
             al_draw_bitmap_region(assets->menu_controls, 0, 0, 1280, 720, 0, 0, 0);
         }
-         // Desenha a porta com base em seu estado
-        if (state->porta_aberta) {
-            al_draw_bitmap_region(assets->porta, 0, 0, 128, 128, 460, 127, 0);  // Porta aberta
-        }
-        else {
-            al_draw_bitmap_region(assets->porta, 0, 0, 128, 128, 460, 127, 0);  // Porta fechada
-        }
     }
     else {
         // Desenha o jogo
@@ -337,28 +293,17 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_get_bitmap_height(assets->porta) * 5, 460, 127, 0);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
 
-
         // Desenha a chat box se a flag estiver ativada
         if (state->chat) {
             al_draw_scaled_bitmap(assets->chat_box, 0, 0, al_get_bitmap_width(assets->chat_box), al_get_bitmap_height(assets->chat_box),
                 225, 500, al_get_bitmap_width(assets->chat_box) * 1.25, al_get_bitmap_height(assets->chat_box) * 1.25, 0);
 
-            if (strlen(state->message) == 0 && strlen(state->resposta1 == 0) 
-                && strlen(state->resposta2 == 0) && strlen(state->resposta3 == 0)
-                && strlen(state->resposta4 == 0)) {
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "qual a raiz quadrada de 4?");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, "4");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, "2");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, "3");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, "5");
 
-                strcpy(state->message, "Qual a raiz quadrada de 2?");
-                strcpy(state->resposta1, "4");
-                strcpy(state->resposta2, "2");
-                strcpy(state->resposta3, "3");
-                strcpy(state->resposta4, "5");
-            }
-
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, state->message);
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, state->resposta1);
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, state->resposta2);
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, state->resposta3);
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, state->resposta4);
         }
     }
 }
@@ -366,7 +311,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
 
 // Calcula a distância entre o jogador e o objeto
 int player_interacao(Character* character, GameState* state, GameAssets* assets) {
-    int range_interacao = 120; 
+    int range_interacao = 120;
 
     int estante_x = 660;
     int estante_y = 125;
@@ -404,29 +349,13 @@ int main(void) {
                 if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) state.key_left = true;
                 if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) state.key_right = true;
 
-                // Verifica se o jogador pressiona a tecla para interagir com a porta
+                // interação da estante
                 if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
-                    handle_porta_interaction(&state);  // Abre/fecha a porta
-
-                    // interação da estante
-                    if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
-                        if (player_interacao(&character, &state, &assets)) {
-                            printf("dentro da interação\n");
-                            state.chat = true;
-                        }
+                    if (player_interacao(&character, &state, &assets)) {
+                        printf("dentro da interação\n");
+                        state.chat = true; // Define a flag para a chat-box visível
                     }
                 }
-            }
-        }
-        else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-            if (state.chat && event.mouse.x >= 880 && event.mouse.x <= 920 &&
-                event.mouse.y >= 560 && event.mouse.y <= 600) {
-                strcpy(state.resposta1, "");
-                strcpy(state.resposta2, "");
-                strcpy(state.resposta3, "");
-                strcpy(state.resposta4, "");
-
-                strcpy(state.message, "está correto");
             }
         }
         else if (event.type == ALLEGRO_EVENT_KEY_UP) {
@@ -437,12 +366,12 @@ int main(void) {
             if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) state.key_right = false;
         }
 
-    if (!state.menu) {
-        update_position(&character, &state, &assets);
-    }
+        if (!state.menu) {
+            update_position(&character, &state, &assets);
+        }
 
 
-    draw_game(&assets, &state, &character);
+        draw_game(&assets, &state, &character);
         al_flip_display();
     }
 

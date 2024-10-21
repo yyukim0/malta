@@ -1,25 +1,2 @@
 ﻿  opia.c
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(37,1): error C2143: erro de sintaxe: ';' ausente antes de '}'
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(127,5): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(128,5): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(129,5): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(130,5): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(131,5): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(346,72): warning C4047: 'função': 'const char *' difere em níveis de indireção de 'int'
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(346,72): warning C4024: 'strlen': tipos diferentes para parâmetro formal e real 1
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(347,44): warning C4047: 'função': 'const char *' difere em níveis de indireção de 'int'
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(347,44): warning C4024: 'strlen': tipos diferentes para parâmetro formal e real 1
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(347,77): warning C4047: 'função': 'const char *' difere em níveis de indireção de 'int'
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(347,77): warning C4024: 'strlen': tipos diferentes para parâmetro formal e real 1
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(348,44): warning C4047: 'função': 'const char *' difere em níveis de indireção de 'int'
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(348,44): warning C4024: 'strlen': tipos diferentes para parâmetro formal e real 1
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(350,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(351,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(352,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(353,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(354,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(424,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(425,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(426,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(427,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(429,17): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  opia.vcxproj -> C:\Users\BIA\Downloads\a\malta\x64\Debug\opia.exe
