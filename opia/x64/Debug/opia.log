@@ -1,3 +1,3 @@
 ﻿  opia.c
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(299,23): warning C4101: 'event': variável local não referenciada
+C:\Users\BIA\Downloads\a\malta\opia\opia.c(302,23): warning C4101: 'event': variável local não referenciada
   opia.vcxproj -> C:\Users\BIA\Downloads\a\malta\x64\Debug\opia.exe

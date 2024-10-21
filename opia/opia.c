@@ -18,7 +18,7 @@ typedef struct {
     ALLEGRO_FONT* fonte_grande, * fonte_pequena;
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
-    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta;
+    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
@@ -33,7 +33,8 @@ typedef struct {
     bool chat;
     bool chat_pergunta_estante, chat_resposta_correta_estante, chat_resposta_errada_estante;
     bool chat_aviso_mesa, mesa_aberta;
-    bool chat_aviso_tv, chat_pergunta_tv;
+    bool chat_aviso_tv, chat_pergunta_tv, chat_para_tv, chat_resposta_errada_tv, chat_resposta_correta_tv;
+    bool chave, tela_final;
 } GameState;
 
 // Função para inicializar Allegro e os componentes
@@ -70,6 +71,7 @@ void init_allegro(GameAssets* assets) {
     assets->estante = al_load_bitmap("./estante.png");
     assets->mesa = al_load_bitmap("./mesa.png");
     assets->porta = al_load_bitmap("./porta.png");
+    assets->tela_final_beta = al_load_bitmap("./telaFinal(beta).png");
 
 
 
@@ -102,6 +104,7 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->estante);
     al_destroy_bitmap(assets->mesa);
     al_destroy_bitmap(assets->porta);
+    al_destroy_bitmap(assets->tela_final_beta);
 }
 
 // Função para inicializar o estado do jogo
@@ -303,42 +306,58 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_draw_scaled_bitmap(assets->chat_box, 0, 0, al_get_bitmap_width(assets->chat_box), al_get_bitmap_height(assets->chat_box),
                 225, 500, al_get_bitmap_width(assets->chat_box) * 1.25, al_get_bitmap_height(assets->chat_box) * 1.25, 0);
         }
+        if (state->chat_para_tv) {
+            al_draw_scaled_bitmap(assets->chat_box, 0, 0, al_get_bitmap_width(assets->chat_box), al_get_bitmap_height(assets->chat_box),
+                225, 500, al_get_bitmap_width(assets->chat_box) * 1.25, al_get_bitmap_height(assets->chat_box) * 1.25, 0);
+        }
 
         //interação com a estante
         if (state->chat_pergunta_estante) {
 
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "qual a raiz quadrada de 4?");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "qual livro eu deveria pegar?");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, "4");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, "2");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, "3");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, "5");
 
         }  if (state->chat_resposta_correta_estante) {
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 450, 520, 0, "esta correto!");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 450, 520, 0, "caiu uma chave!");
         }  if (state->chat_resposta_errada_estante) {
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 450, 520, 0, "esta errado!");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 450, 520, 0, "parece ter nada");
         }
 
         //interação com a mesa
         if (state->chat_aviso_mesa) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "parece que tem um papel aqui. diz:");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "\"conto historias e mostro imagens,");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 410, 600, 0, " sem que voce precise sair do lugar\""); 
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 410, 600, 0, " sem que voce precise sair do lugar\"");
         }
 
         //interação com a tv
         if (state->chat_aviso_tv) {
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "parece que tem um papel com uma conta");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "\"na gaveta da tv");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "parece que tem um papel com uma");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "conta na gaveta da tv");
         }
+
+        if (state->chat_resposta_correta_tv) {
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 430, 520, 0, "parece estar certo!");
+        } if (state->chat_resposta_errada_tv){
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 430, 520, 0, "isso parece um pouco errado!");
+        }
+
         if (state->chat_pergunta_tv) {
 
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "x ao quadrado menos dois, tudo isso elevado a dois");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, "4");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, "2");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, "3");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, "5");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "x ao quadrado menos dois,");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 550, 0, "tudo isso elevado a dois");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 600, 0, "3");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 600, 0, "4");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 640, 0, "5");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 640, 0, "2");
+        } 
 
+        //interação do final aaaaaaa
+        if (state->tela_final) {
+            al_draw_bitmap_region(assets->tela_final_beta, 0, 0, 1280, 720, 0, 0, 0);
         }
     }
 }
@@ -360,8 +379,8 @@ int player_interacao_estante(Character* character, GameState* state, GameAssets*
 int player_interacao_mesa(Character* character, GameState* state, GameAssets* assets) {
     int range_interacao = 120;
 
-    int mesa_x = 337;
-    int mesa_y = 200;
+    int mesa_x = 550;
+    int mesa_y = 150;
 
     int dx_mesa = state->pos_x - mesa_x;
     int dy_mesa = state->pos_y - mesa_y;
@@ -372,14 +391,25 @@ int player_interacao_mesa(Character* character, GameState* state, GameAssets* as
 int player_interacao_tv(Character* character, GameState* state, GameAssets* assets) {
     int range_interacao = 120;
 
-    int tv_x = 550;
-    int tv_y = 150;
+    int tv_x = 337;
+    int tv_y = 200;
 
     int dx_tv = state->pos_x - tv_x;
     int dy_tv = state->pos_y - tv_y;
     return (dx_tv * dx_tv + dy_tv * dy_tv) <= (range_interacao * range_interacao);
 }
 
+//calcula a distância entre o jogador e a chave
+int player_interacao_porta(Character* character, GameState* state, GameAssets* assets) {
+    int range_interacao = 120;
+
+    int porta_x = 460;
+    int porta_y = 127;
+
+    int dx_porta = state->pos_x - porta_x;
+    int dy_porta = state->pos_y - porta_y;
+    return (dx_porta * dx_porta + dy_porta * dy_porta) <= (range_interacao * range_interacao);
+}
 
 // Função principal
 int main(void) {
@@ -391,9 +421,14 @@ int main(void) {
     state.chat_resposta_errada_estante = false;
     state.chat = false;
     state.chat_aviso_mesa = false;
-    state.mesa_aberta = false;
+    state.chave = false;
     state.chat_aviso_tv = false;
     state.chat_pergunta_tv = false;
+    state.chat_para_tv = false;
+    state.chat_pergunta_tv = false;
+    state.chat_resposta_correta_tv = false;
+    state.chat_resposta_errada_tv = false;
+    state.tela_final = false;
 
     init_allegro(&assets);
     init_game_state(&state);
@@ -417,59 +452,88 @@ int main(void) {
                 if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) state.key_right = true;
 
                 //interação da mesa quando a gaveta está fechada
-                if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_mesa && !state.mesa_aberta) {
-                    if (player_interacao_mesa(&character, &state, &assets)) {
-                        printf("dentro da interação - MESA\n");
+                if (player_interacao_mesa(&character, &state, &assets)) {
+                    printf("dentro da interação - MESA\n");
+                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_mesa) {
                         state.chat_aviso_mesa = true;
                         state.chat = true;
-                    }   
-                }
-                if (event.keyboard.keycode == ALLEGRO_KEY_ENTER && state.chat_aviso_mesa) {
-                    state.chat = false;
-                    state.chat_aviso_mesa = false;
-                }
-                
-                //interação da tv
-                if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_tv) {
-                    if (player_interacao_tv(&character, &state, &assets)) {
-                        printf("dentro da interação - TELEVISÃO\n");
-                        state.chat_aviso_tv = true;
-                        state.chat = true;
+                        printf("entrou"); //eu juro que fiquei 1 hora resolvendo um bug, eu botei esse printf e deu certo
+                    }
+                    else if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_mesa) {
+                        state.chat = false;
+                        state.chat_aviso_mesa = false;
                     }
                 }
-                if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_tv) {
-                    state.chat_pergunta_tv = true;
-                    state.chat = true;
-                }
-                if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_pergunta_tv) {
-                    state.chat = false;
-                    state.chat_pergunta_tv = false;
-                }
+                //interação da tv
+                if (player_interacao_tv(&character, &state, &assets)) {
+                    printf("dentro da interação - TELEVISÃO\n");
 
+                
+                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_tv) {
+                        state.chat_aviso_tv = true;
+                        state.chat_para_tv = true;
+                    }
+                    else if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_tv && !state.chat_pergunta_tv) {
+                        state.chat_pergunta_tv = true;
+                        state.chat_aviso_tv = false;
+                        state.chat_para_tv = true;
+                    }
+                    if ((event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_tv) || 
+                        (event.keyboard.keycode == ALLEGRO_KEY_3 && state.chat_pergunta_tv) ||
+                        (event.keyboard.keycode == ALLEGRO_KEY_1 && state.chat_pergunta_tv)) {
+                        state.chat_resposta_errada_tv = true; 
+                        state.chat_resposta_correta_tv = false;
+                        state.chat_pergunta_tv = false; 
+                        state.chat_para_tv = true; 
+                    }
+                    else if (event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_tv) {
+                        printf("Você apertou 4\n");
+                        state.chat_resposta_correta_tv = true; 
+                        state.chat_resposta_errada_tv = false; 
+                        state.chat_pergunta_tv = false; 
+                        state.chat_para_tv = true; 
+                    }
+                    else if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.chat_resposta_correta_tv || state.chat_resposta_errada_tv)) {
+                        state.chat_para_tv = false;
+                        state.chat_resposta_correta_tv = false;
+                        state.chat_resposta_errada_tv = false;
+                        state.chat_aviso_tv = false;
+                    }
+                }
                 //interação da estante
-                if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_resposta_correta_estante && !state.chat_resposta_errada_estante) {
-                    if (player_interacao_estante(&character, &state, &assets)) {
-                        printf("dentro da interação - ESTANTE\n");
+                if (player_interacao_estante(&character, &state, &assets)) {
+                    printf("dentro da interação - ESTANTE\n");
+                
+                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_resposta_correta_estante && !state.chat_resposta_errada_estante) {
+                    
                         state.chat_pergunta_estante = true;
                         state.chat = true;
                     }
+                    if (event.keyboard.keycode == ALLEGRO_KEY_1 || event.keyboard.keycode == ALLEGRO_KEY_3
+                        || event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_estante) {
+                        state.chat_resposta_errada_estante = true;
+                        state.chat_pergunta_estante = false;
+                    }
+                    if (event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_estante) {
+                        printf("Você apertou 2\n");
+                        state.chat_resposta_correta_estante = true;
+                        state.chat_pergunta_estante = false;
+                        state.chat_resposta_errada_estante = false;
+                        state.chave = true;
+                    } 
+                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.chat_resposta_correta_estante || state.chat_resposta_errada_estante)) {
+                        state.chat = false;
+                        state.chat_resposta_correta_estante = false;
+                        state.chat_resposta_errada_estante = false;
+                    }
                 }
-                if (event.keyboard.keycode == ALLEGRO_KEY_1 || event.keyboard.keycode == ALLEGRO_KEY_3
-                    || event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_estante) {
-                    state.chat_resposta_errada_estante = true;
-                    state.chat_pergunta_estante = false;
-                }
-                if (event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_estante) {
-                    printf("Você apertou 2\n");
-                    state.chat_resposta_correta_estante = true;
-                    state.chat_pergunta_estante = false;
-                    state.chat_resposta_errada_estante = false;
-                    state.mesa_aberta = true;
-                } 
-                if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.chat_resposta_correta_estante || state.chat_resposta_errada_estante)) {
-                    state.chat = false;
-                    state.chat_resposta_correta_estante = false;
-                    state.chat_resposta_errada_estante = false;
+            }
+            //interação final
+
+            if (state.chave) {
+                if (player_interacao_porta(&character, &state, &assets) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                    printf("dentro da interação - PORTA\n");
+                    state.tela_final = true;
                 }
             }
         }
