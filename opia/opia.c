@@ -18,7 +18,8 @@ typedef struct {
     ALLEGRO_FONT* fonte_grande, * fonte_pequena;
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
-    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta;
+    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta, * mapa_1, * mapa_2;
+    ALLEGRO_BITMAP* bg_sala_2, * parede_2, * parede_baixo_2, * parede_canto_direito_2, * parede_canto_esquerdo_2, * parede_cima_2, * parede_lados_2, * parede_curta_2, * piso_2, * porta_2;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
@@ -35,6 +36,8 @@ typedef struct {
     bool chat_aviso_mesa, mesa_aberta;
     bool chat_aviso_tv, chat_pergunta_tv, chat_para_tv, chat_resposta_errada_tv, chat_resposta_correta_tv;
     bool chave, tela_final;
+    bool mapa_1;
+    bool mapa_2;
 } GameState;
 
 // Função para inicializar Allegro e os componentes
@@ -54,6 +57,8 @@ void init_allegro(GameAssets* assets) {
     assets->timer = al_create_timer(1.0 / 30.0);
 
     // Carregando imagens
+   
+    // Primeiro Mapa
     assets->cama = al_load_bitmap("./cama.png");
     assets->tv = al_load_bitmap("./televisao.png");
     assets->mainCharacter = al_load_bitmap("./mc - precisamos decidir um nome.png");
@@ -72,8 +77,18 @@ void init_allegro(GameAssets* assets) {
     assets->mesa = al_load_bitmap("./mesa.png");
     assets->porta = al_load_bitmap("./porta.png");
     assets->tela_final_beta = al_load_bitmap("./telaFinal(beta).png");
-
-
+    // Segundo Mapa
+    assets->bg_sala_2 = al_load_bitmap("./bg_sala_2.png");
+    assets->parede_2 = al_load_bitmap("./parede_2.png");
+    assets->parede_baixo_2 = al_load_bitmap("./parede_baixo_2");
+    assets->parede_canto_direito_2 = al_load_bitmap("./parede_canto_direito_2.png");
+    assets->parede_canto_esquerdo_2 = al_load_bitmap("./parede_canto_esquerdo_2.png");
+    assets->parede_cima_2 = al_load_bitmap("./parede_cima_2.png");
+    assets->parede_lados_2 = al_load_bitmap("./parede_lados_2.png");
+    assets->parede_curta_2 = al_load_bitmap("./parede_curta_2.png");
+    assets->piso_2 = al_load_bitmap("./piso_2.png");
+    assets->porta_2 = al_load_bitmap("./porta_2.png");
+    
 
     assets->event_queue = al_create_event_queue();
     al_register_event_source(assets->event_queue, al_get_display_event_source(assets->display));
@@ -105,6 +120,16 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->mesa);
     al_destroy_bitmap(assets->porta);
     al_destroy_bitmap(assets->tela_final_beta);
+    al_destroy_bitmap(assets->bg_sala_2);
+    al_destroy_bitmap(assets->parede_2);
+    al_destroy_bitmap(assets->parede_baixo_2);
+    al_destroy_bitmap(assets->parede_canto_direito_2);
+    al_destroy_bitmap(assets->parede_canto_esquerdo_2);
+    al_destroy_bitmap(assets->parede_cima_2);
+    al_destroy_bitmap(assets->parede_lados_2);
+    al_destroy_bitmap(assets->parede_curta_2);
+    al_destroy_bitmap(assets->piso_2);
+    al_destroy_bitmap(assets->porta_2);
 }
 
 // Função para inicializar o estado do jogo
@@ -153,7 +178,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
 
     //só reza, se der bug vai para a igreja se benzer
 
-    //dimensões da esntante
+    //dimensões da estante
 
     int estante_x = 680;
     int estante_y = 30;
@@ -279,7 +304,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         }
     }
     else {
-        // Desenha o jogo
+        // Desenha o Mapa_1
         al_clear_to_color(al_map_rgb(0, 0, 0));
         al_draw_bitmap_region(assets->bg, -30, 0, 1280, 720, 0, 50, 0);
         al_draw_bitmap_region(assets->parede_cima, 0, 0, 503, 145, 405, 108, 0);
@@ -298,6 +323,19 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_bitmap_region(assets->porta, 0, 0, al_get_bitmap_width(assets->porta) * 5,
             al_get_bitmap_height(assets->porta) * 5, 460, 127, 0);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
+        
+        //Desenha o Mapa_2
+        if(state->mapa_2){
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_draw_bitmap_region(assets->bg_sala_2, -30, 0, 1280, 720, 0, 50, 0);
+            al_draw_bitmap_region(assets->parede_cima_2, 0, 0, 503, 145, 405, 108, 0);
+            al_draw_bitmap_region(assets->parede_canto_direito_2, 0, 0, 69, 210, 905, 108, 0);
+            al_draw_bitmap_region(assets->parede_canto_esquerdo_2, 0, 0, 69, 210, 340, 108, 0);
+            al_draw_bitmap_region(assets->parede_lados_2, 0, 0, 18, 465, 325, 170, 0);
+            al_draw_bitmap_region(assets->parede_2, 0, 0, 18, 465, 970, 170, 0);
+            al_draw_bitmap_region(assets->parede_baixo_2, 0, 0, 672, 17, 320, 630, 0);
+        }
+
 
         ALLEGRO_EVENT event;
 
@@ -429,6 +467,8 @@ int main(void) {
     state.chat_resposta_correta_tv = false;
     state.chat_resposta_errada_tv = false;
     state.tela_final = false;
+    state.mapa_1 = false;
+    state.mapa_2 = false;
 
     init_allegro(&assets);
     init_game_state(&state);
@@ -533,7 +573,8 @@ int main(void) {
             if (state.chave) {
                 if (player_interacao_porta(&character, &state, &assets) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
                     printf("dentro da interação - PORTA\n");
-                    state.tela_final = true;
+                    state.mapa_1 = false;
+                    state.mapa_2 = true;
                 }
             }
         }

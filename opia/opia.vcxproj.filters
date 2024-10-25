@@ -99,6 +99,36 @@
     <Image Include="tileset.PNG">
       <Filter>Arquivos de Recurso</Filter>
     </Image>
+    <Image Include="bg_sala_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede_baixo_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede_canto_direito_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede_canto_esquerdo_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede_cima_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede_lados_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="parede_curta_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="piso_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
+    <Image Include="porta_2.png">
+      <Filter>Arquivos de Recurso</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Ib OST_ Prelude in C Minor (Extended).mp3" />

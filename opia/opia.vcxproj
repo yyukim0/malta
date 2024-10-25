@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="almofada.png" />
+    <Image Include="bg_sala_2.png" />
     <Image Include="caixa.png" />
     <Image Include="cama.png" />
     <Image Include="chat-box.jpeg" />
@@ -158,14 +159,23 @@
     <Image Include="menu - start.png" />
     <Image Include="menu.png" />
     <Image Include="mesa.png" />
+    <Image Include="parede_2.png" />
+    <Image Include="parede_baixo_2.png" />
     <Image Include="parede - baixo.png" />
     <Image Include="parede - canto - direita.png" />
+    <Image Include="parede_canto_direito_2.png" />
     <Image Include="parede - canto - esquerda.png" />
+    <Image Include="parede_canto_esquerdo_2.png" />
+    <Image Include="parede_cima_2.png" />
     <Image Include="parede - cima.png" />
     <Image Include="parede - lado.png" />
+    <Image Include="parede_lados_2.png" />
+    <Image Include="parede_curta_2.png" />
     <Image Include="parede curta.png" />
     <Image Include="parede.png" />
+    <Image Include="piso_2.png" />
     <Image Include="piso.png" />
+    <Image Include="porta_2.png" />
     <Image Include="porta.png" />
     <Image Include="quarto inteiro.png" />
     <Image Include="tapete.png" />
