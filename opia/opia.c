@@ -18,8 +18,8 @@ typedef struct {
     ALLEGRO_FONT* fonte_grande, * fonte_pequena;
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
-    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta, * mapa_1, * mapa_2;
-    ALLEGRO_BITMAP* bg_sala_2, * parede_2, * parede_baixo_2, * parede_canto_direito_2, * parede_canto_esquerdo_2, * parede_cima_2, * parede_lados_2, * parede_curta_2, * piso_2, * porta_2;
+    ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta;
+    ALLEGRO_BITMAP* bg_sala2, * parede_sala2, * parede_baixa_sala2, * parede_canto_direita_sala2, * parede_canto_esquerda_sala2, * parede_cima_sala2, * parede_curta_sala2, * parede_lados_sala2, * porta_sala2;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
@@ -35,9 +35,8 @@ typedef struct {
     bool chat_pergunta_estante, chat_resposta_correta_estante, chat_resposta_errada_estante;
     bool chat_aviso_mesa, mesa_aberta;
     bool chat_aviso_tv, chat_pergunta_tv, chat_para_tv, chat_resposta_errada_tv, chat_resposta_correta_tv;
-    bool chave, tela_final;
-    bool mapa_1;
-    bool mapa_2;
+    bool chave;
+    bool mapa1, mapa2;
 } GameState;
 
 // Função para inicializar Allegro e os componentes
@@ -57,8 +56,6 @@ void init_allegro(GameAssets* assets) {
     assets->timer = al_create_timer(1.0 / 30.0);
 
     // Carregando imagens
-   
-    // Primeiro Mapa
     assets->cama = al_load_bitmap("./cama.png");
     assets->tv = al_load_bitmap("./televisao.png");
     assets->mainCharacter = al_load_bitmap("./mc - precisamos decidir um nome.png");
@@ -76,19 +73,18 @@ void init_allegro(GameAssets* assets) {
     assets->estante = al_load_bitmap("./estante.png");
     assets->mesa = al_load_bitmap("./mesa.png");
     assets->porta = al_load_bitmap("./porta.png");
-    assets->tela_final_beta = al_load_bitmap("./telaFinal(beta).png");
-    // Segundo Mapa
-    assets->bg_sala_2 = al_load_bitmap("./bg_sala_2.png");
-    assets->parede_2 = al_load_bitmap("./parede_2.png");
-    assets->parede_baixo_2 = al_load_bitmap("./parede_baixo_2");
-    assets->parede_canto_direito_2 = al_load_bitmap("./parede_canto_direito_2.png");
-    assets->parede_canto_esquerdo_2 = al_load_bitmap("./parede_canto_esquerdo_2.png");
-    assets->parede_cima_2 = al_load_bitmap("./parede_cima_2.png");
-    assets->parede_lados_2 = al_load_bitmap("./parede_lados_2.png");
-    assets->parede_curta_2 = al_load_bitmap("./parede_curta_2.png");
-    assets->piso_2 = al_load_bitmap("./piso_2.png");
-    assets->porta_2 = al_load_bitmap("./porta_2.png");
-    
+
+    //segundo mapa
+    assets->bg_sala2 = al_load_bitmap("./bg_sala_2.png");
+    assets->parede_sala2 = al_load_bitmap("./parede_2.png");
+    assets->parede_baixa_sala2 = al_load_bitmap("./parede_baixo_2.png");
+    assets->parede_canto_direita_sala2 = al_load_bitmap("./parede_canto_direito_2.png");
+    assets->parede_canto_esquerda_sala2 = al_load_bitmap("./parede_canto_esquerdo_2.png");
+    assets->parede_cima_sala2 = al_load_bitmap("./parede_cima_2.png");
+    assets->parede_curta_sala2 = al_load_bitmap("./parede_curta_2.png");
+    assets->parede_lados_sala2 = al_load_bitmap("./parede_lados_2.png");
+    assets->porta_sala2 = al_load_bitmap(".porta_2.png");
+
 
     assets->event_queue = al_create_event_queue();
     al_register_event_source(assets->event_queue, al_get_display_event_source(assets->display));
@@ -119,17 +115,17 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->estante);
     al_destroy_bitmap(assets->mesa);
     al_destroy_bitmap(assets->porta);
-    al_destroy_bitmap(assets->tela_final_beta);
-    al_destroy_bitmap(assets->bg_sala_2);
-    al_destroy_bitmap(assets->parede_2);
-    al_destroy_bitmap(assets->parede_baixo_2);
-    al_destroy_bitmap(assets->parede_canto_direito_2);
-    al_destroy_bitmap(assets->parede_canto_esquerdo_2);
-    al_destroy_bitmap(assets->parede_cima_2);
-    al_destroy_bitmap(assets->parede_lados_2);
-    al_destroy_bitmap(assets->parede_curta_2);
-    al_destroy_bitmap(assets->piso_2);
-    al_destroy_bitmap(assets->porta_2);
+
+    //mapa2
+    al_destroy_bitmap(assets->bg_sala2);
+    al_destroy_bitmap(assets->parede_sala2);
+    al_destroy_bitmap(assets->parede_baixa_sala2);
+    al_destroy_bitmap(assets->parede_canto_direita_sala2);
+    al_destroy_bitmap(assets->parede_canto_esquerda_sala2);
+    al_destroy_bitmap(assets->parede_cima_sala2);
+    al_destroy_bitmap(assets->parede_curta_sala2);
+    al_destroy_bitmap(assets->parede_lados_sala2);
+    al_destroy_bitmap(assets->porta_sala2);
 }
 
 // Função para inicializar o estado do jogo
@@ -154,108 +150,110 @@ void init_game_state(GameState* state) {
 
 // Função para atualizar a posição do personagem
 void update_position(Character* character, GameState* state, GameAssets* assets) {
+
     bool moving = false; // Verifica se o personagem está se movendo
+    if (state->mapa1 || state->mapa2) {
+        // Dimensões e posição da televisão
+        int tv_x = 337;
+        int tv_y = 200;
+        int tv_width = 95;
+        int tv_height = 50;
 
-    // Dimensões e posição da televisão
-    int tv_x = 337;
-    int tv_y = 200;
-    int tv_width = 95;
-    int tv_height = 50;
+        // Dimensões do canto superior direito (ajustadas)
+        int canto_superior_direito_x_min = 900;
+        int canto_superior_direito_x_max = 1100;
+        int canto_superior_direito_y_min = 180;
+        int canto_superior_direito_y_max = 240;
 
-    // Dimensões do canto superior direito (ajustadas)
-    int canto_superior_direito_x_min = 900;
-    int canto_superior_direito_x_max = 1100;
-    int canto_superior_direito_y_min = 180;
-    int canto_superior_direito_y_max = 240;
+        // Dimensões da cama
+        int cama_x = 860; //830
+        int cama_y = 150; //250
+        int cama_width = al_get_bitmap_width(assets->cama) * 5;
+        int cama_height = al_get_bitmap_height(assets->cama) * 5;
 
-    // Dimensões da cama
-    int cama_x = 860; //830
-    int cama_y = 150; //250
-    int cama_width = al_get_bitmap_width(assets->cama) * 5;
-    int cama_height = al_get_bitmap_height(assets->cama) * 5;
+        printf("Posição do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
 
-    printf("Posição do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
+        //só reza, se der bug vai para a igreja se benzer
 
-    //só reza, se der bug vai para a igreja se benzer
+        //dimensões da esntante
 
-    //dimensões da estante
+        int estante_x = 680;
+        int estante_y = 30;
+        int estante_width = al_get_bitmap_width(assets->estante) * 5;
+        int estante_height = al_get_bitmap_height(assets->estante) * 5;
 
-    int estante_x = 680;
-    int estante_y = 30;
-    int estante_width = al_get_bitmap_width(assets->estante) * 5;
-    int estante_height = al_get_bitmap_height(assets->estante) * 5;
+        //dimensões mesa
 
-    //dimensões mesa
+        int mesa_x = 550;
+        int mesa_y = 20;
+        int mesa_width = al_get_bitmap_width(assets->mesa) * 5;
+        int mesa_height = al_get_bitmap_height(assets->mesa) * 5;
 
-    int mesa_x = 550;
-    int mesa_y = 20;
-    int mesa_width = al_get_bitmap_width(assets->mesa) * 5;
-    int mesa_height = al_get_bitmap_height(assets->mesa) * 5;
-
-    // Verifica colisão somente na direção que o personagem está se movendo
-    if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
-        // Colisão ao mover para a direita (TV + cama + canto superior direito + estante + mesa)
-        if (!(state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
-            state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
-            !(state->pos_x + 90 >= cama_x && state->pos_x + 90 <= cama_x + cama_width &&
-                state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) &&
-            !(state->pos_x + 90 >= mesa_x && state->pos_x + 90 <= mesa_x + mesa_width &&
-                state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) &&
-            !(state->pos_x + 90 >= estante_x && state->pos_x + 90 <= estante_x + estante_width &&
-                state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height) &&
-            !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
-                state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)) {
-            character->frame_y = 128;  // Direção direita
-            state->pos_x += 5;
-            moving = true;
+    
+        // Verifica colisão somente na direção que o personagem está se movendo
+        if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
+            // Colisão ao mover para a direita (TV + cama + canto superior direito + estante + mesa)
+            if (!(state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
+                state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
+                !(state->pos_x + 90 >= cama_x && state->pos_x + 90 <= cama_x + cama_width &&
+                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) &&
+                !(state->pos_x + 90 >= mesa_x && state->pos_x + 90 <= mesa_x + mesa_width &&
+                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) &&
+                !(state->pos_x + 90 >= estante_x && state->pos_x + 90 <= estante_x + estante_width &&
+                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height) &&
+                !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
+                    state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)) {
+                character->frame_y = 128;  // Direção direita
+                state->pos_x += 5;
+                moving = true;
+            }
+        }
+        if (state->key_left && state->pos_x > state->parede_esquerda_x) {
+            // Colisão ao mover para a esquerda (TV + cama + estante + mesa)
+            if (!(state->pos_x <= tv_x + tv_width && state->pos_x >= tv_x &&
+                state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
+                !(state->pos_x <= cama_x + cama_width && state->pos_x >= cama_x &&
+                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) &&
+                !(state->pos_x <= mesa_x + mesa_width && state->pos_x >= mesa_x &&
+                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) &&
+                !(state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
+                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)) {
+                character->frame_y = 128 * 3;  // Direção esquerda
+                state->pos_x -= 5;
+                moving = true;
+            }
+        }
+        if (state->key_down && state->pos_y + 128 < state->parede_baixa_y) {
+            // Colisão ao mover para baixo (TV + cama + canto superior direito + estamte)
+            if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
+                state->pos_y + 128 >= tv_y && state->pos_y + 128 <= tv_y + tv_height) &&
+                !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
+                    state->pos_y + 128 >= cama_y && state->pos_y + 128 <= cama_y + cama_height) &&
+                !(state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
+                    state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)) {
+                character->frame_y = 128 * 2;  // Direção para baixo
+                state->pos_y += 5;
+                moving = true;
+            }
+        }
+        if (state->key_up && state->pos_y > state->parede_cima_y) {
+            // Colisão ao mover para cima (TV + cama + canto superior direito + estante + mesa)
+            if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
+                state->pos_y <= tv_y + tv_height && state->pos_y >= tv_y) &&
+                !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
+                    state->pos_y <= cama_y + cama_height && state->pos_y >= cama_y) &&
+                !(state->pos_x + 90 > mesa_x && state->pos_x < mesa_x + mesa_width &&
+                    state->pos_y <= mesa_y + mesa_height && state->pos_y >= mesa_y) &&
+                !(state->pos_x + 90 > estante_x && state->pos_x < estante_x + estante_width &&
+                    state->pos_y <= estante_y + estante_height && state->pos_y >= estante_y) &&
+                !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
+                    state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)) {
+                character->frame_y = 0;  // Direção para cima
+                state->pos_y -= 5;
+                moving = true;
+            }
         }
     }
-    if (state->key_left && state->pos_x > state->parede_esquerda_x) {
-        // Colisão ao mover para a esquerda (TV + cama + estante + mesa)
-        if (!(state->pos_x <= tv_x + tv_width && state->pos_x >= tv_x &&
-            state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
-            !(state->pos_x <= cama_x + cama_width && state->pos_x >= cama_x &&
-                state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) &&
-            !(state->pos_x <= mesa_x + mesa_width && state->pos_x >= mesa_x &&
-                state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) &&
-            !(state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
-                state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)) {
-            character->frame_y = 128 * 3;  // Direção esquerda
-            state->pos_x -= 5;
-            moving = true;
-        }
-    }
-    if (state->key_down && state->pos_y + 128 < state->parede_baixa_y) {
-        // Colisão ao mover para baixo (TV + cama + canto superior direito + estamte)
-        if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
-            state->pos_y + 128 >= tv_y && state->pos_y + 128 <= tv_y + tv_height) &&
-            !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
-                state->pos_y + 128 >= cama_y && state->pos_y + 128 <= cama_y + cama_height) &&
-            !(state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
-                state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)) {
-            character->frame_y = 128 * 2;  // Direção para baixo
-            state->pos_y += 5;
-            moving = true;
-        }
-    }
-    if (state->key_up && state->pos_y > state->parede_cima_y) {
-        // Colisão ao mover para cima (TV + cama + canto superior direito + estante + mesa)
-        if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
-            state->pos_y <= tv_y + tv_height && state->pos_y >= tv_y) &&
-            !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
-                state->pos_y <= cama_y + cama_height && state->pos_y >= cama_y) &&
-            !(state->pos_x + 90 > mesa_x && state->pos_x < mesa_x + mesa_width &&
-                state->pos_y <= mesa_y + mesa_height && state->pos_y >= mesa_y) &&
-            !(state->pos_x + 90 > estante_x && state->pos_x < estante_x + estante_width &&
-                state->pos_y <= estante_y + estante_height && state->pos_y >= estante_y) &&
-            !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
-                state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)) {
-            character->frame_y = 0;  // Direção para cima
-            state->pos_y -= 5;
-            moving = true;
-        }
-    }
-
 
     // Atualiza a animação do personagem apenas se ele estiver se movendo
     if (moving) {
@@ -303,8 +301,8 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_draw_bitmap_region(assets->menu_controls, 0, 0, 1280, 720, 0, 0, 0);
         }
     }
-    else {
-        // Desenha o Mapa_1
+    else if (state->mapa1) {
+        // Desenha o jogo
         al_clear_to_color(al_map_rgb(0, 0, 0));
         al_draw_bitmap_region(assets->bg, -30, 0, 1280, 720, 0, 50, 0);
         al_draw_bitmap_region(assets->parede_cima, 0, 0, 503, 145, 405, 108, 0);
@@ -323,19 +321,6 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_bitmap_region(assets->porta, 0, 0, al_get_bitmap_width(assets->porta) * 5,
             al_get_bitmap_height(assets->porta) * 5, 460, 127, 0);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
-        
-        //Desenha o Mapa_2
-        if(state->mapa_2){
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_bitmap_region(assets->bg_sala_2, -30, 0, 1280, 720, 0, 50, 0);
-            al_draw_bitmap_region(assets->parede_cima_2, 0, 0, 503, 145, 405, 108, 0);
-            al_draw_bitmap_region(assets->parede_canto_direito_2, 0, 0, 69, 210, 905, 108, 0);
-            al_draw_bitmap_region(assets->parede_canto_esquerdo_2, 0, 0, 69, 210, 340, 108, 0);
-            al_draw_bitmap_region(assets->parede_lados_2, 0, 0, 18, 465, 325, 170, 0);
-            al_draw_bitmap_region(assets->parede_2, 0, 0, 18, 465, 970, 170, 0);
-            al_draw_bitmap_region(assets->parede_baixo_2, 0, 0, 672, 17, 320, 630, 0);
-        }
-
 
         ALLEGRO_EVENT event;
 
@@ -379,7 +364,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
 
         if (state->chat_resposta_correta_tv) {
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 430, 520, 0, "parece estar certo!");
-        } if (state->chat_resposta_errada_tv){
+        } if (state->chat_resposta_errada_tv) {
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 430, 520, 0, "isso parece um pouco errado!");
         }
 
@@ -391,12 +376,16 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 600, 0, "4");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 640, 0, "5");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 640, 0, "2");
-        } 
-
-        //interação do final aaaaaaa
-        if (state->tela_final) {
-            al_draw_bitmap_region(assets->tela_final_beta, 0, 0, 1280, 720, 0, 0, 0);
         }
+    }
+    else if (state->mapa2) {
+        al_clear_to_color(al_map_rgb(167, 167, 167));
+        al_draw_bitmap_region(assets->bg_sala2, -30, 0, 1280, 720, 0, 50, 0);
+        al_draw_bitmap_region(assets->parede_cima_sala2, 0, 0, 503, 145, 415, 146, 0);
+        al_draw_bitmap_region(assets->parede_canto_direita_sala2, 0, 0, 69, 210, 883, 162, 0);
+        al_draw_bitmap_region(assets->parede_lados_sala2, 0, 52, 482, 465, 930, 210, 0);
+
+        al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
     }
 }
 
@@ -466,9 +455,7 @@ int main(void) {
     state.chat_pergunta_tv = false;
     state.chat_resposta_correta_tv = false;
     state.chat_resposta_errada_tv = false;
-    state.tela_final = false;
-    state.mapa_1 = false;
-    state.mapa_2 = false;
+    state.mapa2 = false;
 
     init_allegro(&assets);
     init_game_state(&state);
@@ -490,91 +477,93 @@ int main(void) {
                 if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) state.key_down = true;
                 if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) state.key_left = true;
                 if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) state.key_right = true;
-
+            
+                if(state.mapa1) {
                 //interação da mesa quando a gaveta está fechada
-                if (player_interacao_mesa(&character, &state, &assets)) {
-                    printf("dentro da interação - MESA\n");
-                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_mesa) {
-                        state.chat_aviso_mesa = true;
-                        state.chat = true;
-                        printf("entrou"); //eu juro que fiquei 1 hora resolvendo um bug, eu botei esse printf e deu certo
+                    if (player_interacao_mesa(&character, &state, &assets)) {
+                        printf("dentro da interação - MESA\n");
+                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_mesa) {
+                            state.chat_aviso_mesa = true;
+                            state.chat = true;
+                            printf("entrou"); //eu juro que fiquei 1 hora resolvendo um bug, eu botei esse printf e deu certo
+                        }
+                        else if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_mesa) {
+                            state.chat = false;
+                            state.chat_aviso_mesa = false;
+                        }
                     }
-                    else if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_mesa) {
-                        state.chat = false;
-                        state.chat_aviso_mesa = false;
-                    }
-                }
-                //interação da tv
-                if (player_interacao_tv(&character, &state, &assets)) {
-                    printf("dentro da interação - TELEVISÃO\n");
+                    //interação da tv
+                    if (player_interacao_tv(&character, &state, &assets)) {
+                        printf("dentro da interação - TELEVISÃO\n");
 
-                
-                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_tv) {
-                        state.chat_aviso_tv = true;
-                        state.chat_para_tv = true;
-                    }
-                    else if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_tv && !state.chat_pergunta_tv) {
-                        state.chat_pergunta_tv = true;
-                        state.chat_aviso_tv = false;
-                        state.chat_para_tv = true;
-                    }
-                    if ((event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_tv) || 
-                        (event.keyboard.keycode == ALLEGRO_KEY_3 && state.chat_pergunta_tv) ||
-                        (event.keyboard.keycode == ALLEGRO_KEY_1 && state.chat_pergunta_tv)) {
-                        state.chat_resposta_errada_tv = true; 
-                        state.chat_resposta_correta_tv = false;
-                        state.chat_pergunta_tv = false; 
-                        state.chat_para_tv = true; 
-                    }
-                    else if (event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_tv) {
-                        printf("Você apertou 4\n");
-                        state.chat_resposta_correta_tv = true; 
-                        state.chat_resposta_errada_tv = false; 
-                        state.chat_pergunta_tv = false; 
-                        state.chat_para_tv = true; 
-                    }
-                    else if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.chat_resposta_correta_tv || state.chat_resposta_errada_tv)) {
-                        state.chat_para_tv = false;
-                        state.chat_resposta_correta_tv = false;
-                        state.chat_resposta_errada_tv = false;
-                        state.chat_aviso_tv = false;
-                    }
-                }
-                //interação da estante
-                if (player_interacao_estante(&character, &state, &assets)) {
-                    printf("dentro da interação - ESTANTE\n");
-                
-                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_resposta_correta_estante && !state.chat_resposta_errada_estante) {
-                    
-                        state.chat_pergunta_estante = true;
-                        state.chat = true;
-                    }
-                    if (event.keyboard.keycode == ALLEGRO_KEY_1 || event.keyboard.keycode == ALLEGRO_KEY_3
-                        || event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_estante) {
-                        state.chat_resposta_errada_estante = true;
-                        state.chat_pergunta_estante = false;
-                    }
-                    if (event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_estante) {
-                        printf("Você apertou 2\n");
-                        state.chat_resposta_correta_estante = true;
-                        state.chat_pergunta_estante = false;
-                        state.chat_resposta_errada_estante = false;
-                        state.chave = true;
-                    } 
-                    if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.chat_resposta_correta_estante || state.chat_resposta_errada_estante)) {
-                        state.chat = false;
-                        state.chat_resposta_correta_estante = false;
-                        state.chat_resposta_errada_estante = false;
-                    }
-                }
-            }
-            //interação final
 
-            if (state.chave) {
-                if (player_interacao_porta(&character, &state, &assets) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
-                    printf("dentro da interação - PORTA\n");
-                    state.mapa_1 = false;
-                    state.mapa_2 = true;
+                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_tv) {
+                            state.chat_aviso_tv = true;
+                            state.chat_para_tv = true;
+                        }
+                        else if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_tv && !state.chat_pergunta_tv) {
+                            state.chat_pergunta_tv = true;
+                            state.chat_aviso_tv = false;
+                            state.chat_para_tv = true;
+                        }
+                        if ((event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_tv) ||
+                            (event.keyboard.keycode == ALLEGRO_KEY_3 && state.chat_pergunta_tv) ||
+                            (event.keyboard.keycode == ALLEGRO_KEY_1 && state.chat_pergunta_tv)) {
+                            state.chat_resposta_errada_tv = true;
+                            state.chat_resposta_correta_tv = false;
+                            state.chat_pergunta_tv = false;
+                            state.chat_para_tv = true;
+                        }
+                        else if (event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_tv) {
+                            printf("Você apertou 4\n");
+                            state.chat_resposta_correta_tv = true;
+                            state.chat_resposta_errada_tv = false;
+                            state.chat_pergunta_tv = false;
+                            state.chat_para_tv = true;
+                        }
+                        else if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.chat_resposta_correta_tv || state.chat_resposta_errada_tv)) {
+                            state.chat_para_tv = false;
+                            state.chat_resposta_correta_tv = false;
+                            state.chat_resposta_errada_tv = false;
+                            state.chat_aviso_tv = false;
+                        }
+                    }
+                    //interação da estante
+                    if (player_interacao_estante(&character, &state, &assets)) {
+                        printf("dentro da interação - ESTANTE\n");
+
+                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_resposta_correta_estante && !state.chat_resposta_errada_estante) {
+
+                            state.chat_pergunta_estante = true;
+                            state.chat = true;
+                        }
+                        if (event.keyboard.keycode == ALLEGRO_KEY_1 || event.keyboard.keycode == ALLEGRO_KEY_3
+                            || event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_estante) {
+                            state.chat_resposta_errada_estante = true;
+                            state.chat_pergunta_estante = false;
+                        }
+                        if (event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_estante) {
+                            printf("Você apertou 2\n");
+                            state.chat_resposta_correta_estante = true;
+                            state.chat_pergunta_estante = false;
+                            state.chat_resposta_errada_estante = false;
+                            state.chave = true;
+                        }
+                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.chat_resposta_correta_estante || state.chat_resposta_errada_estante)) {
+                            state.chat = false;
+                            state.chat_resposta_correta_estante = false;
+                            state.chat_resposta_errada_estante = false;
+                        }
+                    }
+                    //interação final
+                    if (state.chave) {
+                        if (player_interacao_porta(&character, &state, &assets) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                            printf("dentro da interação - PORTA\n");
+                            state.mapa1 = false;
+                            state.mapa2 = true;
+
+                        }
+                    }
                 }
             }
         }
