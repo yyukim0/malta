@@ -383,7 +383,10 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_bitmap_region(assets->bg_sala2, -30, 0, 1280, 720, 0, 50, 0);
         al_draw_bitmap_region(assets->parede_cima_sala2, 0, 0, 503, 145, 415, 146, 0);
         al_draw_bitmap_region(assets->parede_canto_direita_sala2, 0, 0, 69, 210, 883, 162, 0);
-        al_draw_bitmap_region(assets->parede_lados_sala2, 0, 52, 482, 465, 930, 210, 0);
+        al_draw_bitmap_region(assets->parede_lados_sala2, 0, 0, 482, 465, 930, 172, 0);
+        al_draw_bitmap_region(assets->parede_baixa_sala2, 0, 0, 622, 51, 345, 622, 0);
+        al_draw_bitmap_region(assets->parede_lados_sala2, 0, 0, 482, 465, 335, 172, 0);
+        al_draw_bitmap_region(assets->parede_canto_esquerda_sala2, 0, 12, 100, 210, 355, 160, 0);
 
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
     }
