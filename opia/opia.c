@@ -19,7 +19,7 @@ typedef struct {
     ALLEGRO_TIMER* timer;
     ALLEGRO_BITMAP* mainCharacter;
     ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta;
-    ALLEGRO_BITMAP* bg_sala2, * parede_sala2, * parede_baixa_sala2, * parede_canto_direita_sala2, * parede_canto_esquerda_sala2, * parede_cima_sala2, * parede_curta_sala2, * parede_lados_sala2, * porta_sala2;
+    ALLEGRO_BITMAP* bg_sala2, * parede_sala2, * parede_baixa_sala2, * parede_canto_direita_sala2, * parede_canto_esquerda_sala2, * parede_cima_sala2, * parede_curta_sala2, * parede_lados_sala2, *porta_sala2, *abajur, *balcao, *banheira, *mesa2, *cadeiradireita, *cadeiraesquerda, *panela, *poca, *portaretrato, *tapete2, *estante2, *cabide, *fotos, *relogio ;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
@@ -83,9 +83,23 @@ void init_allegro(GameAssets* assets) {
     assets->parede_cima_sala2 = al_load_bitmap("./parede_cima_2.png");
     assets->parede_curta_sala2 = al_load_bitmap("./parede_curta_2.png");
     assets->parede_lados_sala2 = al_load_bitmap("./parede_lados_2.png");
-    assets->porta_sala2 = al_load_bitmap(".porta_2.png");
+    assets->porta_sala2 = al_load_bitmap("./porta_2.png");
+    assets->abajur = al_load_bitmap("./abajur.png");
+    assets->balcao = al_load_bitmap("./balcao.png");
+    assets->banheira = al_load_bitmap("./banheira.png");
+    assets->cabide = al_load_bitmap("./cabide.png");
+    assets->cadeiradireita = al_load_bitmap("./cadeiradireita.png");
+    assets->cadeiraesquerda = al_load_bitmap("./cadeiraesquerda.png");
+    assets->estante2 = al_load_bitmap("./estante2.png");
+    assets->mesa2 = al_load_bitmap("./mesa2.png");
+    assets->portaretrato = al_load_bitmap("./portaretrato.png");
+    assets->poca = al_load_bitmap("./poca.png");
+    assets->relogio = al_load_bitmap("./relogio.png");
+    assets->fotos = al_load_bitmap("./fotos.png");
+    assets->tapete2 = al_load_bitmap("./tapete2.png");
+    assets->panela = al_load_bitmap("./panela.png");
 
-
+    
     assets->event_queue = al_create_event_queue();
     al_register_event_source(assets->event_queue, al_get_display_event_source(assets->display));
     al_register_event_source(assets->event_queue, al_get_timer_event_source(assets->timer));
@@ -125,7 +139,22 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->parede_cima_sala2);
     al_destroy_bitmap(assets->parede_curta_sala2);
     al_destroy_bitmap(assets->parede_lados_sala2);
+    al_destroy_bitmap(assets->cabide);
+    al_destroy_bitmap(assets->abajur);
+    al_destroy_bitmap(assets->balcao);
+    al_destroy_bitmap(assets->banheira);
+    al_destroy_bitmap(assets->cabide);
+    al_destroy_bitmap(assets->cadeiradireita);
+    al_destroy_bitmap(assets->cadeiraesquerda);
+    al_destroy_bitmap(assets->estante2);
+    al_destroy_bitmap(assets->fotos);
+    al_destroy_bitmap(assets->mesa2);
+    al_destroy_bitmap(assets->panela);
+    al_destroy_bitmap(assets->poca);
     al_destroy_bitmap(assets->porta_sala2);
+    al_destroy_bitmap(assets->portaretrato);
+    al_destroy_bitmap(assets->tapete2);
+    al_destroy_bitmap(assets->relogio);
 }
 
 // Função para inicializar o estado do jogo
@@ -150,104 +179,102 @@ void init_game_state(GameState* state) {
 
 // Função para atualizar a posição do personagem
 void update_position(Character* character, GameState* state, GameAssets* assets) {
-
     bool moving = false; // Verifica se o personagem está se movendo
     if (state->mapa1 || state->mapa2) {
-        // Dimensões e posição da televisão
+        // Dimensões e posição da televisão (somente em mapa1)
         int tv_x = 337;
         int tv_y = 200;
         int tv_width = 95;
         int tv_height = 50;
 
-        // Dimensões do canto superior direito (ajustadas)
+        // Dimensões do canto superior direito (ajustadas, somente em mapa1)
         int canto_superior_direito_x_min = 900;
         int canto_superior_direito_x_max = 1100;
         int canto_superior_direito_y_min = 180;
         int canto_superior_direito_y_max = 240;
 
-        // Dimensões da cama
-        int cama_x = 860; //830
-        int cama_y = 150; //250
+        printf("Posição do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
+
+        // Dimensões da cama (somente em mapa1)
+        int cama_x = 860;
+        int cama_y = 150;
         int cama_width = al_get_bitmap_width(assets->cama) * 5;
         int cama_height = al_get_bitmap_height(assets->cama) * 5;
 
-        printf("Posição do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
-
-        //só reza, se der bug vai para a igreja se benzer
-
-        //dimensões da esntante
-
+        // Dimensões da estante (somente em mapa1)
         int estante_x = 680;
         int estante_y = 30;
         int estante_width = al_get_bitmap_width(assets->estante) * 5;
         int estante_height = al_get_bitmap_height(assets->estante) * 5;
 
-        //dimensões mesa
-
+        // Dimensões da mesa (somente em mapa1)
         int mesa_x = 550;
         int mesa_y = 20;
         int mesa_width = al_get_bitmap_width(assets->mesa) * 5;
         int mesa_height = al_get_bitmap_height(assets->mesa) * 5;
 
-    
         // Verifica colisão somente na direção que o personagem está se movendo
         if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
-            // Colisão ao mover para a direita (TV + cama + canto superior direito + estante + mesa)
-            if (!(state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
-                state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
-                !(state->pos_x + 90 >= cama_x && state->pos_x + 90 <= cama_x + cama_width &&
-                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) &&
-                !(state->pos_x + 90 >= mesa_x && state->pos_x + 90 <= mesa_x + mesa_width &&
-                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) &&
-                !(state->pos_x + 90 >= estante_x && state->pos_x + 90 <= estante_x + estante_width &&
-                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height) &&
-                !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
-                    state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)) {
+            if (!(
+                (state->mapa1 && state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
+                    state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) ||
+                (state->mapa1 && state->pos_x + 90 >= cama_x && state->pos_x + 90 <= cama_x + cama_width &&
+                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) ||
+                (state->mapa1 && state->pos_x + 90 >= mesa_x && state->pos_x + 90 <= mesa_x + mesa_width &&
+                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) ||
+                (state->mapa1 && state->pos_x + 90 >= estante_x && state->pos_x + 90 <= estante_x + estante_width &&
+                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height) ||
+                (state->mapa1 && state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
+                    state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)
+                )) {
                 character->frame_y = 128;  // Direção direita
                 state->pos_x += 5;
                 moving = true;
             }
         }
         if (state->key_left && state->pos_x > state->parede_esquerda_x) {
-            // Colisão ao mover para a esquerda (TV + cama + estante + mesa)
-            if (!(state->pos_x <= tv_x + tv_width && state->pos_x >= tv_x &&
-                state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) &&
-                !(state->pos_x <= cama_x + cama_width && state->pos_x >= cama_x &&
-                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) &&
-                !(state->pos_x <= mesa_x + mesa_width && state->pos_x >= mesa_x &&
-                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) &&
-                !(state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
-                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)) {
+            if (!(
+                (state->mapa1 && state->pos_x <= tv_x + tv_width && state->pos_x >= tv_x &&
+                    state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) ||
+                (state->mapa1 && state->pos_x <= cama_x + cama_width && state->pos_x >= cama_x &&
+                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) ||
+                (state->mapa1 && state->pos_x <= mesa_x + mesa_width && state->pos_x >= mesa_x &&
+                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) ||
+                (state->mapa1 && state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
+                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)
+                )) {
                 character->frame_y = 128 * 3;  // Direção esquerda
                 state->pos_x -= 5;
                 moving = true;
             }
         }
         if (state->key_down && state->pos_y + 128 < state->parede_baixa_y) {
-            // Colisão ao mover para baixo (TV + cama + canto superior direito + estamte)
-            if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
-                state->pos_y + 128 >= tv_y && state->pos_y + 128 <= tv_y + tv_height) &&
-                !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
-                    state->pos_y + 128 >= cama_y && state->pos_y + 128 <= cama_y + cama_height) &&
-                !(state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
-                    state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)) {
+            if (!(
+                (state->mapa1 && state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
+                    state->pos_y + 128 >= tv_y && state->pos_y + 128 <= tv_y + tv_height) ||
+                (state->mapa1 && state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
+                    state->pos_y + 128 >= cama_y && state->pos_y + 128 <= cama_y + cama_height) ||
+                (state->mapa1 && state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
+                    state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)
+                )) {
                 character->frame_y = 128 * 2;  // Direção para baixo
                 state->pos_y += 5;
                 moving = true;
             }
         }
         if (state->key_up && state->pos_y > state->parede_cima_y) {
-            // Colisão ao mover para cima (TV + cama + canto superior direito + estante + mesa)
-            if (!(state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
-                state->pos_y <= tv_y + tv_height && state->pos_y >= tv_y) &&
-                !(state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
-                    state->pos_y <= cama_y + cama_height && state->pos_y >= cama_y) &&
-                !(state->pos_x + 90 > mesa_x && state->pos_x < mesa_x + mesa_width &&
-                    state->pos_y <= mesa_y + mesa_height && state->pos_y >= mesa_y) &&
-                !(state->pos_x + 90 > estante_x && state->pos_x < estante_x + estante_width &&
-                    state->pos_y <= estante_y + estante_height && state->pos_y >= estante_y) &&
-                !(state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
-                    state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)) {
+            if (!(
+                (state->mapa1 && state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
+                    state->pos_y <= tv_y + tv_height && state->pos_y >= tv_y) ||
+                (state->mapa1 && state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
+                    state->pos_y <= cama_y + cama_height && state->pos_y >= cama_y) ||
+                (state->mapa1 && state->pos_x + 90 > mesa_x && state->pos_x < mesa_x + mesa_width &&
+                    state->pos_y <= mesa_y + mesa_height && state->pos_y >= mesa_y) ||
+                (state->mapa1 && state->pos_x + 90 > estante_x && state->pos_x < estante_x + estante_width &&
+                    state->pos_y <= estante_y + estante_height && state->pos_y >= estante_y) ||
+                (state->mapa1 && state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
+                    state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)
+                )) {
                 character->frame_y = 0;  // Direção para cima
                 state->pos_y -= 5;
                 moving = true;
@@ -263,10 +290,10 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
         }
     }
     else {
-        // Se não estiver se movendo, o personagem mantém o quadro 0 (parado)
         character->frame = 0;
     }
 }
+
 
 // Função para lidar com as interações no menu
 void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode) {
@@ -386,7 +413,38 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_bitmap_region(assets->parede_baixa_sala2, 0, 0, 622, 51, 345, 622, 0);
         al_draw_bitmap_region(assets->parede_lados_sala2, 0, 0, 482, 465, 335, 172, 0);
         al_draw_bitmap_region(assets->parede_canto_esquerda_sala2, 0, 12, 100, 210, 355, 160, 0);
-
+        al_draw_scaled_bitmap(assets->banheira, 0, 0, al_get_bitmap_width(assets->banheira), al_get_bitmap_height(assets->banheira),
+            765, 460, al_get_bitmap_width(assets->banheira) * 0.37 , al_get_bitmap_height(assets->banheira) * 0.37, 0);
+        al_draw_scaled_bitmap(assets->tapete2, 0, 0, al_get_bitmap_width(assets->tapete2), al_get_bitmap_height(assets->tapete2),
+            460, 290, al_get_bitmap_width(assets->tapete2) * 0.12, al_get_bitmap_height(assets->tapete2) * 0.12, 0);
+        al_draw_scaled_bitmap(assets->cadeiraesquerda, 0, 0, al_get_bitmap_width(assets->cadeiraesquerda), al_get_bitmap_height(assets->cadeiraesquerda),
+            380, 490, al_get_bitmap_width(assets->cadeiraesquerda) * 0.3, al_get_bitmap_height(assets->cadeiraesquerda) * 0.3, 0);
+        al_draw_scaled_bitmap(assets->cadeiradireita, 0, 0, al_get_bitmap_width(assets->cadeiradireita), al_get_bitmap_height(assets->cadeiradireita),
+            520, 490, al_get_bitmap_width(assets->cadeiradireita) * 0.3, al_get_bitmap_height(assets->cadeiradireita) * 0.3, 0);
+        al_draw_scaled_bitmap(assets->mesa2, 0, 0, al_get_bitmap_width(assets->mesa2), al_get_bitmap_height(assets->mesa2),
+            435, 490, al_get_bitmap_width(assets->mesa2) * 0.3, al_get_bitmap_height(assets->mesa2) * 0.3, 0);
+        al_draw_scaled_bitmap(assets->estante2, 0, 0, al_get_bitmap_width(assets->estante2), al_get_bitmap_height(assets->estante2),
+            600, 170, al_get_bitmap_width(assets->estante2) * 0.37, al_get_bitmap_height(assets->estante2) * 0.37, 0);
+        al_draw_scaled_bitmap(assets->relogio, 0, 0, al_get_bitmap_width(assets->relogio), al_get_bitmap_height(assets->relogio),
+            375, 240, al_get_bitmap_width(assets->relogio) * 0.13, al_get_bitmap_height(assets->relogio) * 0.13, 0);
+        al_draw_scaled_bitmap(assets->cabide, 0, 0, al_get_bitmap_width(assets->cabide), al_get_bitmap_height(assets->cabide),
+            890, 290, al_get_bitmap_width(assets->cabide) * 0.3, al_get_bitmap_height(assets->cabide) * 0.3, 0);
+        al_draw_scaled_bitmap(assets->balcao, 0, 0, al_get_bitmap_width(assets->balcao), al_get_bitmap_height(assets->balcao),
+            700, 215, al_get_bitmap_width(assets->balcao) * 0.3, al_get_bitmap_height(assets->balcao) * 0.3, 0);
+        al_draw_scaled_bitmap(assets->poca, 0, 0, al_get_bitmap_width(assets->poca), al_get_bitmap_height(assets->poca),
+            715, 385, al_get_bitmap_width(assets->poca) * 0.34, al_get_bitmap_height(assets->poca) * 0.34, 0);
+        al_draw_scaled_bitmap(assets->fotos, 0, 0, al_get_bitmap_width(assets->fotos), al_get_bitmap_height(assets->fotos),
+            785, 175, al_get_bitmap_width(assets->fotos) * 0.2, al_get_bitmap_height(assets->fotos) * 0.2, 0);
+        al_draw_scaled_bitmap(assets->abajur, 0, 0, al_get_bitmap_width(assets->abajur), al_get_bitmap_height(assets->abajur),
+            800, 205, al_get_bitmap_width(assets->abajur) * 0.2, al_get_bitmap_height(assets->abajur) * 0.2, 0);
+        al_draw_scaled_bitmap(assets->panela, 0, 0, al_get_bitmap_width(assets->panela), al_get_bitmap_height(assets->panela),
+            700, 175, al_get_bitmap_width(assets->panela) * 0.15, al_get_bitmap_height(assets->panela) * 0.15, 0);
+        al_draw_scaled_bitmap(assets->porta_sala2, 0, 0, al_get_bitmap_width(assets->porta_sala2), al_get_bitmap_height(assets->porta_sala2),
+            450, 180, al_get_bitmap_width(assets->porta_sala2) * 0.34, al_get_bitmap_height(assets->porta_sala2) * 0.34, 0);
+        al_draw_scaled_bitmap(assets->poca, 0, 0, al_get_bitmap_width(assets->poca), al_get_bitmap_height(assets->poca),
+            350, 360, al_get_bitmap_width(assets->poca) * 0.2, al_get_bitmap_height(assets->poca) * 0.2, 180);
+        al_draw_scaled_bitmap(assets->portaretrato, 0, 0, al_get_bitmap_width(assets->portaretrato), al_get_bitmap_height(assets->portaretrato),
+            540, 205, al_get_bitmap_width(assets->portaretrato) * 0.18, al_get_bitmap_height(assets->portaretrato) * 0.18, 180);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
     }
 }

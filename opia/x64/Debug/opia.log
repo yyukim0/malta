@@ -1,3 +1,3 @@
 ﻿  opia.c
-C:\Users\kaue.sibiapino\source\repos\malta\opia\opia.c(325,23): warning C4101: 'event': variável local não referenciada
-  opia.vcxproj -> C:\Users\kaue.sibiapino\source\repos\malta\x64\Debug\opia.exe
+C:\Users\lfran\New folder (2)\opia\opia.c(352,23): warning C4101: 'event': unreferenced local variable
+  opia.vcxproj -> C:\Users\lfran\New folder (2)\x64\Debug\opia.exe
