@@ -370,12 +370,11 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
 
         if (state->chat_pergunta_tv) {
 
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "x ao quadrado menos dois,");
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 550, 0, "tudo isso elevado a dois");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 600, 0, "3");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 600, 0, "4");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 640, 0, "5");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 640, 0, "2");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 440, 525, 0, "log de 9 na base 3");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, "3");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, "4");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, "5");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, "2");
         }
     }
     else if (state->mapa2) {
