@@ -393,52 +393,11 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
 }
 
 
-//calcula a distância entre o jogador e a estante
-int player_interacao_estante(Character* character, GameState* state, GameAssets* assets) {
-    int range_interacao = 120;
-
-    int estante_x = 660;
-    int estante_y = 125;
-
-    int dx_estante = state->pos_x - estante_x;
-    int dy_estante = state->pos_y - estante_y;
+//calcula a distância entre o jogador e o objeto
+int player_interacao(Character* character, GameState* state, GameAssets* assets, int obj_x, int obj_y, int range_interacao) {
+    int dx_estante = state->pos_x - obj_x;
+    int dy_estante = state->pos_y - obj_y;
     return (dx_estante * dx_estante + dy_estante * dy_estante) <= (range_interacao * range_interacao);
-}
-
-//calcula a distância entre o jogador e a mesa
-int player_interacao_mesa(Character* character, GameState* state, GameAssets* assets) {
-    int range_interacao = 120;
-
-    int mesa_x = 550;
-    int mesa_y = 150;
-
-    int dx_mesa = state->pos_x - mesa_x;
-    int dy_mesa = state->pos_y - mesa_y;
-    return (dx_mesa * dx_mesa + dy_mesa * dy_mesa) <= (range_interacao * range_interacao);
-}
-
-//calcula a distância entre o jogador e a tv
-int player_interacao_tv(Character* character, GameState* state, GameAssets* assets) {
-    int range_interacao = 120;
-
-    int tv_x = 337;
-    int tv_y = 200;
-
-    int dx_tv = state->pos_x - tv_x;
-    int dy_tv = state->pos_y - tv_y;
-    return (dx_tv * dx_tv + dy_tv * dy_tv) <= (range_interacao * range_interacao);
-}
-
-//calcula a distância entre o jogador e a chave
-int player_interacao_porta(Character* character, GameState* state, GameAssets* assets) {
-    int range_interacao = 120;
-
-    int porta_x = 460;
-    int porta_y = 127;
-
-    int dx_porta = state->pos_x - porta_x;
-    int dy_porta = state->pos_y - porta_y;
-    return (dx_porta * dx_porta + dy_porta * dy_porta) <= (range_interacao * range_interacao);
 }
 
 // Função principal
@@ -483,7 +442,7 @@ int main(void) {
             
                 if(state.mapa1) {
                 //interação da mesa quando a gaveta está fechada
-                    if (player_interacao_mesa(&character, &state, &assets)) {
+                    if (player_interacao(&character, &state, &assets, 550, 150, 120)) {
                         printf("dentro da interação - MESA\n");
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_mesa) {
                             state.chat_aviso_mesa = true;
@@ -496,7 +455,7 @@ int main(void) {
                         }
                     }
                     //interação da tv
-                    if (player_interacao_tv(&character, &state, &assets)) {
+                    if (player_interacao(&character, &state, &assets, 337, 200, 120)) {
                         printf("dentro da interação - TELEVISÃO\n");
 
 
@@ -532,7 +491,7 @@ int main(void) {
                         }
                     }
                     //interação da estante
-                    if (player_interacao_estante(&character, &state, &assets)) {
+                    if (player_interacao(&character, &state, &assets, 660, 125, 120)) {
                         printf("dentro da interação - ESTANTE\n");
 
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_resposta_correta_estante && !state.chat_resposta_errada_estante) {
@@ -560,7 +519,7 @@ int main(void) {
                     }
                     //interação final
                     if (state.chave) {
-                        if (player_interacao_porta(&character, &state, &assets) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                        if (player_interacao(&character, &state, &assets, 460, 127, 120) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
                             printf("dentro da interação - PORTA\n");
                             state.mapa1 = false;
                             state.mapa2 = true;
