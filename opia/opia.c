@@ -30,6 +30,7 @@ typedef struct {
     bool start;
     int pos_x, pos_y;
     int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
+    int parede2_cima_y, parede2_baixa_y, parede2_esquerda_x, parede2_direita_x;
     bool key_up, key_down, key_left, key_right; // Flags para controle das teclas de movimento
     bool chat;
     bool chat_pergunta_estante, chat_resposta_correta_estante, chat_resposta_errada_estante;
@@ -170,6 +171,11 @@ void init_game_state(GameState* state) {
     state->parede_esquerda_x = 343;
     state->parede_direita_x = 970;
 
+    state->parede2_cima_y = 190;  // Ajuste da colisão na parte superior
+    state->parede2_baixa_y = 630;
+    state->parede2_esquerda_x = 358;
+    state->parede2_direita_x = 965;
+
     // Inicializa as flags das teclas como falsas
     state->key_up = false;
     state->key_down = false;
@@ -181,13 +187,13 @@ void init_game_state(GameState* state) {
 void update_position(Character* character, GameState* state, GameAssets* assets) {
     bool moving = false; // Verifica se o personagem está se movendo
     if (state->mapa1 || state->mapa2) {
-        // Dimensões e posição da televisão (somente em mapa1)
+        // Dimensões e posição da televisão 
         int tv_x = 337;
         int tv_y = 200;
         int tv_width = 95;
         int tv_height = 50;
 
-        // Dimensões do canto superior direito (ajustadas, somente em mapa1)
+        // Dimensões do canto superior direito 
         int canto_superior_direito_x_min = 900;
         int canto_superior_direito_x_max = 1100;
         int canto_superior_direito_y_min = 180;
@@ -195,89 +201,148 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
 
         printf("Posição do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
 
-        // Dimensões da cama (somente em mapa1)
+        // Dimensões da cama 
         int cama_x = 860;
         int cama_y = 150;
         int cama_width = al_get_bitmap_width(assets->cama) * 5;
         int cama_height = al_get_bitmap_height(assets->cama) * 5;
 
-        // Dimensões da estante (somente em mapa1)
+        // Dimensões da estante 
         int estante_x = 680;
         int estante_y = 30;
         int estante_width = al_get_bitmap_width(assets->estante) * 5;
         int estante_height = al_get_bitmap_height(assets->estante) * 5;
 
-        // Dimensões da mesa (somente em mapa1)
+        // Dimensões da mesa 
         int mesa_x = 550;
         int mesa_y = 20;
         int mesa_width = al_get_bitmap_width(assets->mesa) * 5;
         int mesa_height = al_get_bitmap_height(assets->mesa) * 5;
 
+        //mapa2
+        int banheira_x = 795, banheira_y = 540, banheira_width = al_get_bitmap_width(assets->banheira) * 0.37, banheira_height = al_get_bitmap_height(assets->banheira) * 0.37;
+        int cadeira_esquerda_x = 380, cadeira_esquerda_y = 490, cadeira_width = al_get_bitmap_width(assets->cadeiraesquerda) * 0.3, cadeira_height = al_get_bitmap_height(assets->cadeiraesquerda) * 0.3;
+        int cadeira_direita_x = 520, cadeira_direita_y = 490;
+        int mesa2_x = 435, mesa2_y = 490, mesa2_width = al_get_bitmap_width(assets->mesa2) * 0.3, mesa2_height = al_get_bitmap_height(assets->mesa2) * 0.3;
+        int estante2_x = 600, estante2_y = 170, estante2_width = al_get_bitmap_width(assets->estante2) * 0.37, estante2_height = al_get_bitmap_height(assets->estante2) * 0.37;
+        int cabide_x = 890, cabide_y = 290, cabide_width = al_get_bitmap_width(assets->cabide) * 0.3, cabide_height = al_get_bitmap_height(assets->cabide) * 0.3;
+        int balcao_x = 700, balcao_y = 215, balcao_width = al_get_bitmap_width(assets->balcao) * 0.3, balcao_height = al_get_bitmap_height(assets->balcao) * 0.3;
+        int poca_x = 715, poca_y = 385, poca_width = al_get_bitmap_width(assets->poca) * 0.34, poca_height = al_get_bitmap_height(assets->poca) * 0.34;
+
         // Verifica colisão somente na direção que o personagem está se movendo
-        if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
-            if (!(
-                (state->mapa1 && state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
-                    state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) ||
-                (state->mapa1 && state->pos_x + 90 >= cama_x && state->pos_x + 90 <= cama_x + cama_width &&
-                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) ||
-                (state->mapa1 && state->pos_x + 90 >= mesa_x && state->pos_x + 90 <= mesa_x + mesa_width &&
-                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) ||
-                (state->mapa1 && state->pos_x + 90 >= estante_x && state->pos_x + 90 <= estante_x + estante_width &&
-                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height) ||
-                (state->mapa1 && state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
-                    state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)
-                )) {
-                character->frame_y = 128;  // Direção direita
-                state->pos_x += 5;
-                moving = true;
+        if (state->mapa1) {
+            if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
+                if (!(
+                    (state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
+                        state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) ||
+                    (state->pos_x + 90 >= cama_x && state->pos_x + 90 <= cama_x + cama_width &&
+                        state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) ||
+                    (state->pos_x + 90 >= mesa_x && state->pos_x + 90 <= mesa_x + mesa_width &&
+                        state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) ||
+                    (state->pos_x + 90 >= estante_x && state->pos_x + 90 <= estante_x + estante_width &&
+                        state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height) ||
+                    (state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
+                        state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)
+                    )) {
+                    character->frame_y = 128;  // Direção direita
+                    state->pos_x += 5;
+                    moving = true;
+                }
+            }
+            if (state->key_left && state->pos_x > state->parede_esquerda_x) {
+                if (!(
+                    (state->pos_x <= tv_x + tv_width && state->pos_x >= tv_x &&
+                        state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) ||
+                    (state->pos_x <= cama_x + cama_width && state->pos_x >= cama_x &&
+                        state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) ||
+                    (state->pos_x <= mesa_x + mesa_width && state->pos_x >= mesa_x &&
+                        state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) ||
+                    (state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
+                        state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)
+                    )) {
+                    character->frame_y = 128 * 3;  // Direção esquerda
+                    state->pos_x -= 5;
+                    moving = true;
+                }
+            }
+            if (state->key_down && state->pos_y + 128 < state->parede_baixa_y) {
+                if (!(
+                    (state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
+                        state->pos_y + 128 >= tv_y && state->pos_y + 128 <= tv_y + tv_height) ||
+                    (state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
+                        state->pos_y + 128 >= cama_y && state->pos_y + 128 <= cama_y + cama_height) ||
+                    (state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
+                        state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)
+                    )) {
+                    character->frame_y = 128 * 2;  // Direção para baixo
+                    state->pos_y += 5;
+                    moving = true;
+                }
+            }
+            if (state->key_up && state->pos_y > state->parede_cima_y) {
+                if (!(
+                    (state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
+                        state->pos_y <= tv_y + tv_height && state->pos_y >= tv_y) ||
+                    (state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
+                        state->pos_y <= cama_y + cama_height && state->pos_y >= cama_y) ||
+                    (state->pos_x + 90 > mesa_x && state->pos_x < mesa_x + mesa_width &&
+                        state->pos_y <= mesa_y + mesa_height && state->pos_y >= mesa_y) ||
+                    (state->pos_x + 90 > estante_x && state->pos_x < estante_x + estante_width &&
+                        state->pos_y <= estante_y + estante_height && state->pos_y >= estante_y) ||
+                    (state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
+                        state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)
+                    )) {
+                    character->frame_y = 0;  // Direção para cima
+                    state->pos_y -= 5;
+                    moving = true;
+                }
             }
         }
-        if (state->key_left && state->pos_x > state->parede_esquerda_x) {
-            if (!(
-                (state->mapa1 && state->pos_x <= tv_x + tv_width && state->pos_x >= tv_x &&
-                    state->pos_y + 128 > tv_y && state->pos_y < tv_y + tv_height) ||
-                (state->mapa1 && state->pos_x <= cama_x + cama_width && state->pos_x >= cama_x &&
-                    state->pos_y + 128 > cama_y && state->pos_y < cama_y + cama_height) ||
-                (state->mapa1 && state->pos_x <= mesa_x + mesa_width && state->pos_x >= mesa_x &&
-                    state->pos_y + 128 > mesa_y && state->pos_y < mesa_y + mesa_height) ||
-                (state->mapa1 && state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
-                    state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)
-                )) {
-                character->frame_y = 128 * 3;  // Direção esquerda
-                state->pos_x -= 5;
-                moving = true;
+        //mapa2
+        if (state->mapa2) {
+            if (state->key_right && state->pos_x + 90 < state->parede2_direita_x) {
+                if (!(
+                   
+                    (state->pos_x + 90 >= banheira_x && state->pos_x + 90 <= banheira_x + banheira_width &&
+                        state->pos_y + 128 > banheira_y && state->pos_y < banheira_y + banheira_height)
+                    )) {
+                    character->frame_y = 128; // Direção direita
+                    state->pos_x += 5;
+                    moving = true;
+                }
             }
-        }
-        if (state->key_down && state->pos_y + 128 < state->parede_baixa_y) {
-            if (!(
-                (state->mapa1 && state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
-                    state->pos_y + 128 >= tv_y && state->pos_y + 128 <= tv_y + tv_height) ||
-                (state->mapa1 && state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
-                    state->pos_y + 128 >= cama_y && state->pos_y + 128 <= cama_y + cama_height) ||
-                (state->mapa1 && state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
-                    state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)
-                )) {
-                character->frame_y = 128 * 2;  // Direção para baixo
-                state->pos_y += 5;
-                moving = true;
+            if (state->key_left && state->pos_x > state->parede2_esquerda_x) {
+                if (!(
+                    
+                    (state->pos_x <= banheira_x + banheira_width && state->pos_x >= banheira_x &&
+                        state->pos_y + 128 > banheira_y && state->pos_y < banheira_y + banheira_height)
+                    )) {
+                    character->frame_y = 128 * 3; // Direção esquerda
+                    state->pos_x -= 5;
+                    moving = true;
+                }
             }
-        }
-        if (state->key_up && state->pos_y > state->parede_cima_y) {
-            if (!(
-                (state->mapa1 && state->pos_x + 90 > tv_x && state->pos_x < tv_x + tv_width &&
-                    state->pos_y <= tv_y + tv_height && state->pos_y >= tv_y) ||
-                (state->mapa1 && state->pos_x + 90 > cama_x && state->pos_x < cama_x + cama_width &&
-                    state->pos_y <= cama_y + cama_height && state->pos_y >= cama_y) ||
-                (state->mapa1 && state->pos_x + 90 > mesa_x && state->pos_x < mesa_x + mesa_width &&
-                    state->pos_y <= mesa_y + mesa_height && state->pos_y >= mesa_y) ||
-                (state->mapa1 && state->pos_x + 90 > estante_x && state->pos_x < estante_x + estante_width &&
-                    state->pos_y <= estante_y + estante_height && state->pos_y >= estante_y) ||
-                (state->mapa1 && state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
-                    state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)
-                )) {
-                character->frame_y = 0;  // Direção para cima
-                state->pos_y -= 5;
-                moving = true;
+            if (state->key_down && state->pos_y + 128 < state->parede2_baixa_y) {
+                if (!(
+                    
+                    (state->pos_x + 90 > banheira_x && state->pos_x < banheira_x + banheira_width &&
+                        state->pos_y + 128 >= banheira_y && state->pos_y + 128 <= banheira_y + banheira_height)
+                    )) {
+                    character->frame_y = 128 * 2; // Direção para baixo
+                    state->pos_y += 5;
+                    moving = true;
+                }
+            }
+            if (state->key_up && state->pos_y > state->parede2_cima_y) {
+                if (!(
+                    
+                    (state->pos_x + 90 > banheira_x && state->pos_x < banheira_x + banheira_width &&
+                        state->pos_y <= banheira_y + banheira_height && state->pos_y >= banheira_y)
+                    )) {
+                    character->frame_y = 0; // Direção para cima
+                    state->pos_y -= 5;
+                    moving = true;
+                }
             }
         }
     }
