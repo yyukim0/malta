@@ -84,7 +84,7 @@ void init_allegro(GameAssets* assets) {
     assets->parede_cima_sala2 = al_load_bitmap("./parede_cima_2.png");
     assets->parede_curta_sala2 = al_load_bitmap("./parede_curta_2.png");
     assets->parede_lados_sala2 = al_load_bitmap("./parede_lados_2.png");
-    assets->porta_sala2 = al_load_bitmap("./porta_2.png");
+    assets->porta_sala2 = al_load_bitmap("./porta.png");
     assets->abajur = al_load_bitmap("./abajur.png");
     assets->balcao = al_load_bitmap("./balcao.png");
     assets->banheira = al_load_bitmap("./banheira.png");
@@ -565,7 +565,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_scaled_bitmap(assets->panela, 0, 0, al_get_bitmap_width(assets->panela), al_get_bitmap_height(assets->panela),
             700, 175, al_get_bitmap_width(assets->panela) * 0.15, al_get_bitmap_height(assets->panela) * 0.15, 0);
         al_draw_scaled_bitmap(assets->porta_sala2, 0, 0, al_get_bitmap_width(assets->porta_sala2), al_get_bitmap_height(assets->porta_sala2),
-            450, 180, al_get_bitmap_width(assets->porta_sala2) * 0.34, al_get_bitmap_height(assets->porta_sala2) * 0.34, 0);
+            461, 178, al_get_bitmap_width(assets->porta_sala2) * 0.9, al_get_bitmap_height(assets->porta_sala2) * 0.9, 0);
         al_draw_scaled_rotated_bitmap(assets->poca, al_get_bitmap_width(assets->poca) / 2, al_get_bitmap_height(assets->poca) / 2, 360 + (al_get_bitmap_width(assets->poca) * 0.2) / 2, 360 + (al_get_bitmap_height(assets->poca) * 0.2) / 2, 0.2, 0.2, ALLEGRO_PI, 0 );
 
         al_draw_scaled_bitmap(assets->portaretrato, 0, 0, al_get_bitmap_width(assets->portaretrato), al_get_bitmap_height(assets->portaretrato),
