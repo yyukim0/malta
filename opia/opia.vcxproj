@@ -189,7 +189,11 @@
     <Font Include="YumeNikkiTitleScreen.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="header.c" />
     <ClCompile Include="opia.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

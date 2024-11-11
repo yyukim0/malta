@@ -1,3 +1,6 @@
-﻿  opia.c
-C:\Users\lfran\New folder (2)\opia\opia.c(352,23): warning C4101: 'event': unreferenced local variable
-  opia.vcxproj -> C:\Users\lfran\New folder (2)\x64\Debug\opia.exe
+﻿  header.c
+C:\Users\vitor\OneDrive\Área de Trabalho\Nova pasta\malta\opia\header.c(318,23): warning C4101: 'event': variável local não referenciada
+  opia.c
+C:\Users\vitor\OneDrive\Área de Trabalho\Nova pasta\malta\opia\opia.c(52,25): warning C4013: 'player_interacao' indefinido; assumindo extern retornando int
+  Gerando Código...
+  opia.vcxproj -> C:\Users\vitor\OneDrive\Área de Trabalho\Nova pasta\malta\x64\Debug\opia.exe
