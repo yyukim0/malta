@@ -26,7 +26,7 @@ typedef struct {
     bool start;
     int pos_x, pos_y;
     int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
-    bool key_up, key_down, key_left, key_right; // Flags para controle das teclas de movimento
+    bool key_up, key_down, key_left, key_right;
     bool chat;
     bool chat_pergunta_estante, chat_resposta_correta_estante, chat_resposta_errada_estante;
     bool chat_aviso_mesa, mesa_aberta;

@@ -315,6 +315,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_get_bitmap_height(assets->porta) * 5, 460, 127, 0);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
 
+
         ALLEGRO_EVENT event;
 
         // Desenha a chat box 
@@ -331,10 +332,6 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         if (state->chat_pergunta_estante) {
 
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "qual livro eu deveria pegar?");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, "4");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, "2");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, "3");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, "5");
 
         }  if (state->chat_resposta_correta_estante) {
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 450, 520, 0, "caiu uma chave!");
@@ -421,3 +418,6 @@ int player_interacao(Character* character, GameState* state, GameAssets* assets,
     int dy_estante = state->pos_y - obj_y;
     return (dx_estante * dx_estante + dy_estante * dy_estante) <= (range_interacao * range_interacao);
 }
+
+
+
