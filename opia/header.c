@@ -137,6 +137,11 @@ void init_game_state(GameState* state) {
     state->parede_esquerda_x = 343;
     state->parede_direita_x = 970;
 
+    state->parede2_cima_y = 190;  // Ajuste da colisão na parte superior
+    state->parede2_baixa_y = 630;
+    state->parede2_esquerda_x = 358;
+    state->parede2_direita_x = 965;
+
     // Inicializa as flags das teclas como falsas
     state->key_up = false;
     state->key_down = false;
