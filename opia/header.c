@@ -6,7 +6,7 @@
 #include <allegro5/keyboard.h>
 #include "header.h"
 
-// Função para inicializar Allegro e os componentes
+// FunÃ§Ã£o para inicializar Allegro e os componentes
 void init_allegro(GameAssets* assets) {
     al_init();
     al_init_font_addon();
@@ -75,7 +75,7 @@ void init_allegro(GameAssets* assets) {
 
 }
 
-// Função para limpar os recursos
+// FunÃ§Ã£o para limpar os recursos
 void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->menu_start);
     al_destroy_bitmap(assets->chat_box);
@@ -124,15 +124,15 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->relogio);
 }
 
-// Função para inicializar o estado do jogo
+// FunÃ§Ã£o para inicializar o estado do jogo
 void init_game_state(GameState* state) {
-    state->menu = true; // Começa com o menu ativo
-    state->start = true; // O cursor do menu começa na opção 'Start'
+    state->menu = true; // ComeÃ§a com o menu ativo
+    state->start = true; // O cursor do menu comeÃ§a na opÃ§Ã£o 'Start'
     state->pos_x = 640;
     state->pos_y = 360;
 
-    // Posições das paredes para impedir que o personagem as atravesse
-    state->parede_cima_y = 180;  // Ajuste da colisão na parte superior
+    // PosiÃ§Ãµes das paredes para impedir que o personagem as atravesse
+    state->parede_cima_y = 180;  // Ajuste da colisÃ£o na parte superior
     state->parede_baixa_y = 630;
     state->parede_esquerda_x = 343;
     state->parede_direita_x = 970;
@@ -144,43 +144,53 @@ void init_game_state(GameState* state) {
     state->key_right = false;
 }
 
-// Função para atualizar a posição do personagem
+// FunÃ§Ã£o para atualizar a posiÃ§Ã£o do personagem
 void update_position(Character* character, GameState* state, GameAssets* assets) {
-    bool moving = false; // Verifica se o personagem está se movendo
+    bool moving = false; // Verifica se o personagem estÃ¡ se movendo
     if (state->mapa1 || state->mapa2) {
-        // Dimensões e posição da televisão (somente em mapa1)
+        // DimensÃµes e posiÃ§Ã£o da televisÃ£o (somente em mapa1)
         int tv_x = 337;
         int tv_y = 200;
         int tv_width = 95;
         int tv_height = 50;
 
-        // Dimensões do canto superior direito (ajustadas, somente em mapa1)
+        // DimensÃµes do canto superior direito (ajustadas, somente em mapa1)
         int canto_superior_direito_x_min = 900;
         int canto_superior_direito_x_max = 1100;
         int canto_superior_direito_y_min = 180;
         int canto_superior_direito_y_max = 240;
 
-        printf("Posição do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
+        printf("PosiÃ§Ã£o do personagem: X=%d, Y=%d\n", state->pos_x, state->pos_y);
 
-        // Dimensões da cama (somente em mapa1)
+        // DimensÃµes da cama (somente em mapa1)
         int cama_x = 860;
         int cama_y = 150;
         int cama_width = al_get_bitmap_width(assets->cama) * 5;
         int cama_height = al_get_bitmap_height(assets->cama) * 5;
 
-        // Dimensões da estante (somente em mapa1)
+        // DimensÃµes da estante (somente em mapa1)
         int estante_x = 680;
         int estante_y = 30;
         int estante_width = al_get_bitmap_width(assets->estante) * 5;
         int estante_height = al_get_bitmap_height(assets->estante) * 5;
 
-        // Dimensões da mesa (somente em mapa1)
+        // DimensÃµes da mesa (somente em mapa1)
         int mesa_x = 550;
         int mesa_y = 20;
         int mesa_width = al_get_bitmap_width(assets->mesa) * 5;
         int mesa_height = al_get_bitmap_height(assets->mesa) * 5;
 
-        // Verifica colisão somente na direção que o personagem está se movendo
+        //mapa2
+        int mesa3_x = 340, mesa3_y = 170, mesa3_width = al_get_bitmap_width(assets->mesa2) * 0.2, mesa3_height = al_get_bitmap_height(assets->mesa2) * 0.18;
+        int banheira_x = 795, banheira_y = 540, banheira_width = al_get_bitmap_width(assets->banheira) * 0.37, banheira_height = al_get_bitmap_height(assets->banheira) * 0.37;
+        int cadeira_esquerda_x = 380, cadeira_esquerda_y = 500, cadeira_esquerda_width = al_get_bitmap_width(assets->cadeiraesquerda) * 0.3, cadeira_esquerda_height = al_get_bitmap_height(assets->cadeiraesquerda) * 0.2;
+        int cadeira_direita_x = 490, cadeira_direita_y = 500, cadeira_direita_width = al_get_bitmap_width(assets->cadeiradireita) * 0.3, cadeira_direita_height = al_get_bitmap_height(assets->cadeiradireita) * 0.2;
+        int mesa2_x = 435, mesa2_y = 500, mesa2_width = al_get_bitmap_width(assets->mesa2) * 0.3, mesa2_height = al_get_bitmap_height(assets->mesa2) * 0.2;
+        int estante2_x = 620, estante2_y = 150, estante2_width = al_get_bitmap_width(assets->estante2) * 0.2, estante2_height = al_get_bitmap_height(assets->estante2) * 0.2;
+        int cabide_x = 910, cabide_y = 260, cabide_width = al_get_bitmap_width(assets->cabide) * 0.1, cabide_height = al_get_bitmap_height(assets->cabide) * 0.2;
+        int balcao_x = 725, balcao_y = 140, balcao_width = al_get_bitmap_width(assets->balcao) * 0.2, balcao_height = al_get_bitmap_height(assets->balcao) * 0.2;
+
+        // Verifica colisÃ£o somente na direÃ§Ã£o que o personagem estÃ¡ se movendo
         if (state->key_right && state->pos_x + 90 < state->parede_direita_x) {
             if (!(
                 (state->mapa1 && state->pos_x + 90 >= tv_x && state->pos_x + 90 <= tv_x + tv_width &&
@@ -194,7 +204,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 (state->mapa1 && state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
                     state->pos_y + 128 > canto_superior_direito_y_min && state->pos_y < canto_superior_direito_y_max)
                 )) {
-                character->frame_y = 128;  // Direção direita
+                character->frame_y = 128;  // DireÃ§Ã£o direita
                 state->pos_x += 5;
                 moving = true;
             }
@@ -210,7 +220,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 (state->mapa1 && state->pos_x <= estante_x + estante_width && state->pos_x >= estante_x &&
                     state->pos_y + 128 > estante_y && state->pos_y < estante_y + estante_height)
                 )) {
-                character->frame_y = 128 * 3;  // Direção esquerda
+                character->frame_y = 128 * 3;  // DireÃ§Ã£o esquerda
                 state->pos_x -= 5;
                 moving = true;
             }
@@ -224,7 +234,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 (state->mapa1 && state->pos_x >= canto_superior_direito_x_min && state->pos_x <= canto_superior_direito_x_max &&
                     state->pos_y + 128 >= canto_superior_direito_y_min && state->pos_y + 128 <= canto_superior_direito_y_max)
                 )) {
-                character->frame_y = 128 * 2;  // Direção para baixo
+                character->frame_y = 128 * 2;  // DireÃ§Ã£o para baixo
                 state->pos_y += 5;
                 moving = true;
             }
@@ -242,14 +252,121 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 (state->mapa1 && state->pos_x + 90 >= canto_superior_direito_x_min && state->pos_x + 90 <= canto_superior_direito_x_max &&
                     state->pos_y <= canto_superior_direito_y_max && state->pos_y >= canto_superior_direito_y_min)
                 )) {
-                character->frame_y = 0;  // Direção para cima
+                character->frame_y = 0;  // DireÃ§Ã£o para cima
                 state->pos_y -= 5;
                 moving = true;
             }
         }
     }
+    //mapa2
+    if (state->mapa2) {
+            // Movendo para a direita
+            if (state->key_right && state->pos_x + 90 < state->parede2_direita_x) {
+                if (!(
+                    (state->pos_x + 90 >= banheira_x && state->pos_x + 90 <= banheira_x + banheira_width &&
+                        state->pos_y + 128 > banheira_y && state->pos_y < banheira_y + banheira_height) ||
+                    (state->pos_x + 90 >= cadeira_esquerda_x && state->pos_x + 90 <= cadeira_esquerda_x + cadeira_esquerda_width &&
+                        state->pos_y + 128 > cadeira_esquerda_y && state->pos_y < cadeira_esquerda_y + cadeira_esquerda_height) ||
+                    (state->pos_x + 90 >= cadeira_direita_x && state->pos_x + 90 <= cadeira_direita_x + cadeira_direita_width &&
+                        state->pos_y + 128 > cadeira_direita_y && state->pos_y < cadeira_direita_y + cadeira_direita_height) ||
+                    (state->pos_x + 90 >= mesa2_x && state->pos_x + 90 <= mesa2_x + mesa2_width &&
+                        state->pos_y + 128 > mesa2_y && state->pos_y < mesa2_y + mesa2_height) ||
+                    (state->pos_x + 90 >= mesa3_x && state->pos_x + 90 <= mesa3_x + mesa3_width &&
+                        state->pos_y + 128 > mesa3_y && state->pos_y < mesa3_y + mesa3_height) ||
+                    (state->pos_x + 90 >= estante2_x && state->pos_x + 90 <= estante2_x + estante2_width &&
+                        state->pos_y + 128 > estante2_y && state->pos_y < estante2_y + estante2_height) ||
+                    (state->pos_x + 90 >= cabide_x && state->pos_x + 90 <= cabide_x + cabide_width &&
+                        state->pos_y + 128 > cabide_y && state->pos_y < cabide_y + cabide_height) ||
+                    (state->pos_x + 90 >= balcao_x && state->pos_x + 90 <= balcao_x + balcao_width &&
+                        state->pos_y + 128 > balcao_y && state->pos_y < balcao_y + balcao_height) 
+                    )) {
+                    character->frame_y = 128;
+                    state->pos_x += 5;
+                    moving = true;
+                }
+            }
+   
+            // Movendo para a esquerda
+            if (state->key_left && state->pos_x > state->parede2_esquerda_x) {
+                if (!(
+                    (state->pos_x <= banheira_x + banheira_width && state->pos_x >= banheira_x &&
+                        state->pos_y + 128 > banheira_y && state->pos_y < banheira_y + banheira_height) ||
+                    (state->pos_x <= cadeira_esquerda_x + cadeira_esquerda_width && state->pos_x >= cadeira_esquerda_x &&
+                        state->pos_y + 128 > cadeira_esquerda_y && state->pos_y < cadeira_esquerda_y + cadeira_esquerda_height) ||
+                    (state->pos_x <= cadeira_direita_x + cadeira_direita_width && state->pos_x >= cadeira_direita_x &&
+                        state->pos_y + 128 > cadeira_direita_y && state->pos_y < cadeira_direita_y + cadeira_direita_height) ||
+                    (state->pos_x <= mesa2_x + mesa2_width && state->pos_x >= mesa2_x &&
+                        state->pos_y + 128 > mesa2_y && state->pos_y < mesa2_y + mesa2_height) ||
+                    (state->pos_x <= mesa3_x + mesa3_width && state->pos_x >= mesa3_x &&
+                        state->pos_y + 128 > mesa3_y && state->pos_y < mesa3_y + mesa3_height) ||
+                    (state->pos_x <= estante2_x + estante2_width && state->pos_x >= estante2_x &&
+                        state->pos_y + 128 > estante2_y && state->pos_y < estante2_y + estante2_height) ||
+                    (state->pos_x <= cabide_x + cabide_width && state->pos_x >= cabide_x &&
+                        state->pos_y + 128 > cabide_y && state->pos_y < cabide_y + cabide_height) ||
+                    (state->pos_x <= balcao_x + balcao_width && state->pos_x >= balcao_x &&
+                        state->pos_y + 128 > balcao_y && state->pos_y < balcao_y + balcao_height) 
+                    )) {
+                    character->frame_y = 128 * 3;
+                    state->pos_x -= 5;
+                    moving = true;
+                }
+            }
 
-    // Atualiza a animação do personagem apenas se ele estiver se movendo
+            // Movendo para baixo
+            if (state->key_down && state->pos_y + 128 < state->parede2_baixa_y) {
+                if (!(
+                    (state->pos_y + 128 >= banheira_y && state->pos_y + 128 <= banheira_y + banheira_height &&
+                        state->pos_x + 90 > banheira_x && state->pos_x < banheira_x + banheira_width) ||
+                    (state->pos_y + 128 >= cadeira_esquerda_y && state->pos_y + 128 <= cadeira_esquerda_y + cadeira_esquerda_height &&
+                        state->pos_x + 90 > cadeira_esquerda_x && state->pos_x < cadeira_esquerda_x + cadeira_esquerda_width) ||
+                    (state->pos_y + 128 >= cadeira_direita_y && state->pos_y + 128 <= cadeira_direita_y + cadeira_direita_height &&
+                        state->pos_x + 90 > cadeira_direita_x && state->pos_x < cadeira_direita_x + cadeira_direita_width) ||
+                    (state->pos_y + 128 >= mesa2_y && state->pos_y + 128 <= mesa2_y + mesa2_height &&
+                        state->pos_x + 90 > mesa2_x && state->pos_x < mesa2_x + mesa2_width) ||
+                    (state->pos_y + 128 >= mesa3_y && state->pos_y + 128 <= mesa3_y + mesa3_height &&
+                        state->pos_x + 90 > mesa3_x && state->pos_x < mesa3_x + mesa3_width) ||
+                    (state->pos_y + 128 >= estante2_y && state->pos_y + 128 <= estante2_y + estante2_height &&
+                        state->pos_x + 90 > estante2_x && state->pos_x < estante2_x + estante2_width) ||
+                    (state->pos_y + 128 >= cabide_y && state->pos_y + 128 <= cabide_y + cabide_height &&
+                        state->pos_x + 90 > cabide_x && state->pos_x < cabide_x + cabide_width) ||
+                    (state->pos_y + 128 >= balcao_y && state->pos_y + 128 <= balcao_y + balcao_height &&
+                        state->pos_x + 90 > balcao_x && state->pos_x < balcao_x + balcao_width) 
+                    )) {
+                    character->frame_y = 128 * 2;
+                    state->pos_y += 5;
+                    moving = true;
+                }
+            }
+
+            // Movendo para cima
+            if (state->key_up && state->pos_y > state->parede2_cima_y) {
+                if (!(
+                    (state->pos_y <= banheira_y + banheira_height && state->pos_y >= banheira_y &&
+                        state->pos_x + 90 > banheira_x && state->pos_x < banheira_x + banheira_width) ||
+                    (state->pos_y <= cadeira_esquerda_y + cadeira_esquerda_height && state->pos_y >= cadeira_esquerda_y &&
+                        state->pos_x + 90 > cadeira_esquerda_x && state->pos_x < cadeira_esquerda_x + cadeira_esquerda_width) ||
+                    (state->pos_y <= cadeira_direita_y + cadeira_direita_height && state->pos_y >= cadeira_direita_y &&
+                        state->pos_x + 90 > cadeira_direita_x && state->pos_x < cadeira_direita_x + cadeira_direita_width) ||
+                    (state->pos_y <= mesa2_y + mesa2_height && state->pos_y >= mesa2_y &&
+                        state->pos_x + 90 > mesa2_x && state->pos_x < mesa2_x + mesa2_width) ||
+                    (state->pos_y <= mesa3_y + mesa3_height && state->pos_y >= mesa3_y &&
+                        state->pos_x + 90 > mesa3_x && state->pos_x < mesa3_x + mesa3_width) ||
+                    (state->pos_y <= estante2_y + estante2_height && state->pos_y >= estante2_y &&
+                        state->pos_x + 90 > estante2_x && state->pos_x < estante2_x + estante2_width) ||
+                    (state->pos_y <= cabide_y + cabide_height && state->pos_y >= cabide_y &&
+                        state->pos_x + 90 > cabide_x && state->pos_x < cabide_x + cabide_width) ||
+                    (state->pos_y <= balcao_y + balcao_height && state->pos_y >= balcao_y &&
+                        state->pos_x + 90 > balcao_x && state->pos_x < balcao_x + balcao_width) 
+                    )) {
+                    character->frame_y = 0;
+                    state->pos_y -= 5;
+                    moving = true;
+                }
+            }
+        }
+    }
+
+    // Atualiza a animaÃ§Ã£o do personagem apenas se ele estiver se movendo
     if (moving) {
         character->frame += 0.2f;
         if (character->frame > 3) {
@@ -261,7 +378,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
     }
 }
 
-// Função para lidar com as interações no menu
+// FunÃ§Ã£o para lidar com as interaÃ§Ãµes no menu
 void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode) {
     if (keycode == ALLEGRO_KEY_DOWN) {
         state->start = false; // Alterna para 'Controls'
@@ -274,7 +391,7 @@ void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode)
             state->menu = false; // Se 'Start' estiver selecionado, sai do menu
         }
         else {
-            // Mostra a página de controles
+            // Mostra a pÃ¡gina de controles
             al_draw_bitmap(assets->page_controls, 0, 0, 0);
             al_flip_display();
             al_rest(5.0); // Exibe por 5 segundos
@@ -282,7 +399,7 @@ void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode)
     }
 }
 
-// Função para desenhar o cenário, personagem e menu
+// FunÃ§Ã£o para desenhar o cenÃ¡rio, personagem e menu
 void draw_game(GameAssets* assets, GameState* state, Character* character) {
     if (state->menu) {
         // Desenha o menu
@@ -328,7 +445,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
                 225, 500, al_get_bitmap_width(assets->chat_box) * 1.25, al_get_bitmap_height(assets->chat_box) * 1.25, 0);
         }
 
-        //interação com a estante
+        //interaÃ§Ã£o com a estante
         if (state->chat_pergunta_estante) {
 
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 400, 520, 0, "qual livro eu deveria pegar?");
@@ -339,14 +456,14 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 450, 520, 0, "parece ter nada");
         }
 
-        //interação com a mesa
+        //interaÃ§Ã£o com a mesa
         if (state->chat_aviso_mesa) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "parece que tem um papel aqui. diz:");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "\"conto historias e mostro imagens,");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 410, 600, 0, " sem que voce precise sair do lugar\"");
         }
 
-        //interação com a tv
+        //interaÃ§Ã£o com a tv
         if (state->chat_aviso_tv) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "parece que tem um papel com uma");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "conta na gaveta da tv");
@@ -376,8 +493,6 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_bitmap_region(assets->parede_baixa_sala2, 0, 0, 622, 51, 345, 622, 0);
         al_draw_bitmap_region(assets->parede_lados_sala2, 0, 0, 482, 465, 335, 172, 0);
         al_draw_bitmap_region(assets->parede_canto_esquerda_sala2, 0, 12, 100, 210, 355, 160, 0);
-        al_draw_scaled_bitmap(assets->banheira, 0, 0, al_get_bitmap_width(assets->banheira), al_get_bitmap_height(assets->banheira),
-            765, 460, al_get_bitmap_width(assets->banheira) * 0.37, al_get_bitmap_height(assets->banheira) * 0.37, 0);
         al_draw_scaled_bitmap(assets->tapete2, 0, 0, al_get_bitmap_width(assets->tapete2), al_get_bitmap_height(assets->tapete2),
             460, 290, al_get_bitmap_width(assets->tapete2) * 0.12, al_get_bitmap_height(assets->tapete2) * 0.12, 0);
         al_draw_scaled_bitmap(assets->cadeiraesquerda, 0, 0, al_get_bitmap_width(assets->cadeiraesquerda), al_get_bitmap_height(assets->cadeiraesquerda),
@@ -403,16 +518,18 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_scaled_bitmap(assets->panela, 0, 0, al_get_bitmap_width(assets->panela), al_get_bitmap_height(assets->panela),
             700, 175, al_get_bitmap_width(assets->panela) * 0.15, al_get_bitmap_height(assets->panela) * 0.15, 0);
         al_draw_scaled_bitmap(assets->porta_sala2, 0, 0, al_get_bitmap_width(assets->porta_sala2), al_get_bitmap_height(assets->porta_sala2),
-            450, 180, al_get_bitmap_width(assets->porta_sala2) * 0.34, al_get_bitmap_height(assets->porta_sala2) * 0.34, 0);
-        al_draw_scaled_bitmap(assets->poca, 0, 0, al_get_bitmap_width(assets->poca), al_get_bitmap_height(assets->poca),
-            350, 360, al_get_bitmap_width(assets->poca) * 0.2, al_get_bitmap_height(assets->poca) * 0.2, 180);
+            461, 178, al_get_bitmap_width(assets->porta_sala2) * 0.9, al_get_bitmap_height(assets->porta_sala2) * 0.9, 0);
+        al_draw_scaled_rotated_bitmap(assets->poca, al_get_bitmap_width(assets->poca) / 2, al_get_bitmap_height(assets->poca) / 2, 360 + (al_get_bitmap_width(assets->poca) * 0.2) / 2, 360 + (al_get_bitmap_height(assets->poca) * 0.2) / 2, 0.2, 0.2, ALLEGRO_PI, 0 );
+
         al_draw_scaled_bitmap(assets->portaretrato, 0, 0, al_get_bitmap_width(assets->portaretrato), al_get_bitmap_height(assets->portaretrato),
             540, 205, al_get_bitmap_width(assets->portaretrato) * 0.18, al_get_bitmap_height(assets->portaretrato) * 0.18, 180);
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
+        al_draw_scaled_bitmap(assets->banheira, 0, 0, al_get_bitmap_width(assets->banheira), al_get_bitmap_height(assets->banheira),
+            765, 460, al_get_bitmap_width(assets->banheira) * 0.37, al_get_bitmap_height(assets->banheira) * 0.37, 0);
     }
 }
 
-//calcula a distância entre o jogador e o objeto
+//calcula a distÃ¢ncia entre o jogador e o objeto
 int player_interacao(Character* character, GameState* state, GameAssets* assets, int obj_x, int obj_y, int range_interacao) {
     int dx_estante = state->pos_x - obj_x;
     int dy_estante = state->pos_y - obj_y;
