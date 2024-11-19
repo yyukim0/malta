@@ -20,12 +20,13 @@ typedef struct {
     float frame;
 } Character;
 
-// Struct do Menu, posição
+// Struct do Menu, posiÃ§Ã£o
 typedef struct {
     bool menu;
     bool start;
     int pos_x, pos_y;
     int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
+    int parede2_cima_y, parede2_baixa_y, parede2_esquerda_x, parede2_direita_x;
     bool key_up, key_down, key_left, key_right;
     bool chat;
     bool chat_pergunta_estante, chat_resposta_correta_estante, chat_resposta_errada_estante;
