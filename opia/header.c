@@ -262,9 +262,9 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 moving = true;
             }
         }
-    }
-    //mapa2
-    if (state->mapa2) {
+
+        //mapa2
+        if (state->mapa2) {
             // Movendo para a direita
             if (state->key_right && state->pos_x + 90 < state->parede2_direita_x) {
                 if (!(
@@ -283,14 +283,14 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                     (state->pos_x + 90 >= cabide_x && state->pos_x + 90 <= cabide_x + cabide_width &&
                         state->pos_y + 128 > cabide_y && state->pos_y < cabide_y + cabide_height) ||
                     (state->pos_x + 90 >= balcao_x && state->pos_x + 90 <= balcao_x + balcao_width &&
-                        state->pos_y + 128 > balcao_y && state->pos_y < balcao_y + balcao_height) 
+                        state->pos_y + 128 > balcao_y && state->pos_y < balcao_y + balcao_height)
                     )) {
                     character->frame_y = 128;
                     state->pos_x += 5;
                     moving = true;
                 }
             }
-   
+
             // Movendo para a esquerda
             if (state->key_left && state->pos_x > state->parede2_esquerda_x) {
                 if (!(
@@ -309,7 +309,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                     (state->pos_x <= cabide_x + cabide_width && state->pos_x >= cabide_x &&
                         state->pos_y + 128 > cabide_y && state->pos_y < cabide_y + cabide_height) ||
                     (state->pos_x <= balcao_x + balcao_width && state->pos_x >= balcao_x &&
-                        state->pos_y + 128 > balcao_y && state->pos_y < balcao_y + balcao_height) 
+                        state->pos_y + 128 > balcao_y && state->pos_y < balcao_y + balcao_height)
                     )) {
                     character->frame_y = 128 * 3;
                     state->pos_x -= 5;
@@ -335,7 +335,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                     (state->pos_y + 128 >= cabide_y && state->pos_y + 128 <= cabide_y + cabide_height &&
                         state->pos_x + 90 > cabide_x && state->pos_x < cabide_x + cabide_width) ||
                     (state->pos_y + 128 >= balcao_y && state->pos_y + 128 <= balcao_y + balcao_height &&
-                        state->pos_x + 90 > balcao_x && state->pos_x < balcao_x + balcao_width) 
+                        state->pos_x + 90 > balcao_x && state->pos_x < balcao_x + balcao_width)
                     )) {
                     character->frame_y = 128 * 2;
                     state->pos_y += 5;
@@ -361,7 +361,7 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                     (state->pos_y <= cabide_y + cabide_height && state->pos_y >= cabide_y &&
                         state->pos_x + 90 > cabide_x && state->pos_x < cabide_x + cabide_width) ||
                     (state->pos_y <= balcao_y + balcao_height && state->pos_y >= balcao_y &&
-                        state->pos_x + 90 > balcao_x && state->pos_x < balcao_x + balcao_width) 
+                        state->pos_x + 90 > balcao_x && state->pos_x < balcao_x + balcao_width)
                     )) {
                     character->frame_y = 0;
                     state->pos_y -= 5;
@@ -369,17 +369,17 @@ void update_position(Character* character, GameState* state, GameAssets* assets)
                 }
             }
         }
-    }
 
-    // Atualiza a animação do personagem apenas se ele estiver se movendo
-    if (moving) {
-        character->frame += 0.2f;
-        if (character->frame > 3) {
-            character->frame -= 3;
+        // Atualiza a animação do personagem apenas se ele estiver se movendo
+        if (moving) {
+            character->frame += 0.2f;
+            if (character->frame > 3) {
+                character->frame -= 3;
+            }
         }
-    }
-    else {
-        character->frame = 0;
+        else {
+            character->frame = 0;
+        }
     }
 }
 
