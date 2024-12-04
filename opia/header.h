@@ -9,7 +9,7 @@ typedef struct {
     ALLEGRO_BITMAP* mainCharacter;
     ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta;
     ALLEGRO_BITMAP* bg_sala2, * parede_sala2, * parede_baixa_sala2, * parede_canto_direita_sala2, * parede_canto_esquerda_sala2, * parede_cima_sala2, * parede_curta_sala2, * parede_lados_sala2, * porta_sala2, * abajur, * balcao, * banheira, * mesa2, * cadeiradireita, * cadeiraesquerda, * panela, * poca, * portaretrato, * tapete2, * estante2, * cabide, * fotos, * relogio;
-    ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box, * panela_selected, * soco_selected, * esquivar_selected, * dead_scene;
+    ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box, * panela_selected, * soco_selected, * esquivar_selected, * dead_scene, * esquivar_soco_selected;
     ALLEGRO_SAMPLE* musicamenu, * musicaMapa2, * musica_final;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
@@ -33,7 +33,7 @@ typedef struct {
     bool chat_aviso_mesa;
     bool chat_aviso_tv, chat_pergunta_tv, chat_para_tv, chat_resposta_errada_tv, chat_resposta_correta_tv;
     bool chave, chave_banheira;
-    bool chat2;
+    bool chat2, chat_aviso_panela, pegou_panela;
     bool chat_aviso_estante2, chat_aviso_abajur, segundo_chat_aviso_abajur, chat_aviso_relogio, chat_aviso_retrato, segundo_chat_aviso_retrato, chat_aviso_banheira;
     bool chat_aviso_porta_sem_chave, chat_aviso_banheira_com_chave, chat_resposta_errada_porta, chat_pergunta_porta, endgame;
     bool mapa1, mapa2;

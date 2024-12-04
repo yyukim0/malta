@@ -54,6 +54,7 @@ void init_allegro(GameAssets* assets) {
     assets->porta = al_load_bitmap("./porta.png");
 
     //segundo mapa
+    assets->esquivar_soco_selected = al_load_bitmap("./esquivar_soco_selected.png");
     assets->bg_sala2 = al_load_bitmap("./bg_sala_2.png");
     assets->parede_sala2 = al_load_bitmap("./parede_2.png");
     assets->parede_baixa_sala2 = al_load_bitmap("./parede_baixo_2.png");
@@ -78,7 +79,7 @@ void init_allegro(GameAssets* assets) {
     assets->tapete2 = al_load_bitmap("./tapete2.png");
     assets->panela = al_load_bitmap("./panela.png");
     assets->tela_final_beta = al_load_bitmap("./telaFinal(beta).png");
-    assets->dead_scene = al_load_bitmap("./dead scene.png");
+    assets->dead_scene = al_load_bitmap("./dead_scene.png");
 
 
     assets->event_queue = al_create_event_queue();
@@ -91,6 +92,7 @@ void init_allegro(GameAssets* assets) {
 
 // Função para limpar os recursos
 void destroy_assets(GameAssets* assets) {
+    al_destroy_bitmap(assets->esquivar_soco_selected);
     al_destroy_bitmap(assets->soco_selected);
     al_destroy_bitmap(assets->dead_scene);
     al_destroy_bitmap(assets->esquivar_selected);
@@ -577,8 +579,11 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "\"Lembrar:");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "1. comprar pilhas para o relogio");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "2. consertar o quadro do lado da");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 640, 0, "porta.\" Alias, talvez fosse");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 680, 0, "legal pegar uma dessas panelas");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 640, 0, "porta.\"");
+        }
+
+        if (state->chat_aviso_panela) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "uma panela! talvez seria bom pegar");
         }
 
         //interação com a relogio
@@ -702,6 +707,77 @@ void interacao_player_batalha(GameState* state, GameAssets* assets, int keycode,
     }
     // Quando a vida do jogador chega a 0 ou menor, exibe a cena de morte
     else if (*player_life <= 0) {
+        al_draw_bitmap(assets->dead_scene, 0, 0, 0);
+    }
+
+    // Atualiza a tela
+    al_flip_display();
+}
+
+void interacao_player_batalha_sem_panela(GameState* state, GameAssets* assets, int keycode, int* boss_life, int* player_life) {
+    static bool show_damage_text = false; // Controla a exibição do texto de dano
+    static int damage_timer = 0;         // Temporizador para controlar por quanto tempo o texto aparece
+
+    // Verifica se o jogador ainda está vivo
+    if (*player_life > 0) {
+        // Verifica se o chefe ainda tem vida
+        if (*boss_life > 0) {
+            // Alterna o estado com base na tecla pressionada
+            if (keycode == ALLEGRO_KEY_RIGHT) {
+                if (state->panela) {
+                    state->panela = false;
+                    state->esquiva = true;
+                }
+            }
+            else if (keycode == ALLEGRO_KEY_LEFT) {
+                if (state->esquiva) {
+                    state->esquiva = false;
+                    state->panela = true;
+                }
+            }
+            else if (keycode == ALLEGRO_KEY_Z) {
+                if (state->panela) {
+                    show_damage_text = true;
+                    damage_timer = 40; // Exibe o texto por 40 frames
+
+                    *player_life -= 20; // Reduz a vida do jogador em 20
+                }
+                else if (state->esquiva) {
+                    show_damage_text = true;
+                    damage_timer = 40; // Exibe o texto por 40 frames
+                }
+            }
+
+            // Atualiza os estados visuais com base no estado ativo
+            if (state->panela) {
+                al_draw_bitmap(assets->soco_selected, 0, 0, 0);
+            }
+            else if (state->esquiva) {
+                al_draw_bitmap(assets->esquivar_soco_selected, 0, 0, 0);
+            }
+
+            // Exibe o texto de dano ou esquiva, conforme o caso
+            if (show_damage_text) {
+                if (state->esquiva) {
+                    al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você esquivou!!!");
+                }
+                else {
+                    al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você deu 5 de dano!!!");
+                }
+                damage_timer--;
+
+                if (damage_timer <= 0) {
+                    show_damage_text = false; // Esconde o texto após o temporizador acabar
+                }
+            }
+        }
+        else {
+            // Quando a vida do chefe chega a 0 ou menor, exibe a tela final
+            al_draw_bitmap(assets->tela_final_beta, 0, 0, 0);
+        }
+    }
+    else {
+        // Quando a vida do jogador chega a 0 ou menor, exibe a cena de morte
         al_draw_bitmap(assets->dead_scene, 0, 0, 0);
     }
 

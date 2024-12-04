@@ -48,8 +48,10 @@ int main(void) {
     state.panela = false;
     state.esquiva = false;
     state.batalha = false;
+    state.pegou_panela = false;
+    state.chat_aviso_panela = false;
     int boss_life = 300;
-    int player_life = 60;
+    int player_life = 300;
 
     strcpy_s(str, sizeof(str), "");
 
@@ -80,7 +82,7 @@ int main(void) {
 
                 if (state.mapa1) {
                     //interação da mesa quando a gaveta
-                    if (player_interacao(&character, &state, &assets, 550, 150, 120)) {
+                    if (player_interacao(&character, &state, &assets, 550, 150, 70)) {
                         printf("dentro da interação - MESA\n");
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_mesa) {
                             state.chat_aviso_mesa = true;
@@ -93,7 +95,7 @@ int main(void) {
                         }
                     }
                     //interação da tv
-                    if (player_interacao(&character, &state, &assets, 337, 200, 120)) {
+                    if (player_interacao(&character, &state, &assets, 337, 200, 80)) {
                         printf("dentro da interação - TELEVISÃO\n");
 
 
@@ -164,7 +166,7 @@ int main(void) {
                     }
                     //interação final
                     if (state.chave) {
-                        if (player_interacao(&character, &state, &assets, 460, 127, 120) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                        if (player_interacao(&character, &state, &assets, 460, 127, 80) && event.keyboard.keycode == ALLEGRO_KEY_Z) {
                             printf("dentro da interação - PORTA\n");
                             state.mapa1 = false;
                             state.mapa2 = true;
@@ -188,7 +190,7 @@ int main(void) {
                     }
 
                     //interação do abajur
-                    if (player_interacao(&character, &state, &assets, 755, 140, 120)) {
+                    if (player_interacao(&character, &state, &assets, 755, 140, 80)) {
                         printf("dentro da interação - abajur\n");
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_abajur && !state.segundo_chat_aviso_abajur) {
                             state.chat_aviso_abajur = true;
@@ -236,6 +238,18 @@ int main(void) {
                             state.segundo_chat_aviso_retrato = false;
                         }
                     }
+                    if (player_interacao(&character, &state, &assets, 700, 210, 80)) {
+                        printf("dentro da interação - panela\n");
+                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_panela) {
+                            state.chat_aviso_panela = true;
+                            state.chat2 = true;
+                        }
+                        else if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_aviso_panela) {
+                            state.chat2 = false;
+                            state.chat_aviso_panela = false;
+                            state.pegou_panela = true;
+                        }
+                    }
 
                     //interação da banheira
                     if (player_interacao(&character, &state, &assets, 795, 500, 120)) {
@@ -260,7 +274,7 @@ int main(void) {
                     }
 
                     //interação da porta
-                    if (player_interacao(&character, &state, &assets, 461, 178, 50)) {
+                    if (player_interacao(&character, &state, &assets, 461, 178, 80)) {
                         printf("dentro da interação - porta2\n");
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_porta_sem_chave && state.chave_banheira == false) {
                             state.chat_aviso_porta_sem_chave = true;
@@ -289,7 +303,8 @@ int main(void) {
                             state.chat_pergunta_porta = true;
                             state.chat_resposta_errada_porta = false;
                             state.endgame = true;
-
+                            al_stop_samples();
+                            al_play_sample(assets.musica_final, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
                         }
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_resposta_errada_porta) {
                             state.chat2 = false;
@@ -303,10 +318,7 @@ int main(void) {
                             state.batalha = true;
                             state.mapa2 = false;
                             state.panela = true;
-                            al_stop_samples();
-                            al_play_sample(assets.musica_final, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
                         }
-
                     }
                 }
             }
@@ -323,13 +335,14 @@ int main(void) {
             update_position(&character, &state, &assets);
         }
 
-        if (state.batalha && !state.menu && !state.mapa2) {
+        if (state.batalha && !state.menu && !state.mapa2 && state.pegou_panela) {
             interacao_player_batalha(&state, &assets, event.keyboard.keycode, &boss_life, &player_life);
         }
 
-        if (state.batalha == true) {
-           
+        if (state.batalha && !state.menu && !state.mapa2 && !state.pegou_panela) {
+            interacao_player_batalha_sem_panela(&state, &assets, event.keyboard.keycode, &boss_life, &player_life);
         }
+
 
         draw_game(&assets, &state, &character);
         exibir_texto_centralizado(&assets); // Garante que o texto sempre seja desenhado
