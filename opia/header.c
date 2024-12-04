@@ -438,9 +438,15 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_clear_to_color(al_map_rgb(0, 0, 0));
         if (state->start) {
             al_draw_bitmap_region(assets->menu_start, 0, 0, 1280, 720, 0, 0, 0);
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 1000, 50, 0, "aperte z");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 1040, 80, 0, "para");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 970, 110, 0, "selecionar");
         }
         else {
             al_draw_bitmap_region(assets->menu_controls, 0, 0, 1280, 720, 0, 0, 0);
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 1000, 50, 0, "aperte z");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 1040, 80, 0, "para");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 970, 110, 0, "selecionar");
         }
     }
     else if (state->mapa1) {
