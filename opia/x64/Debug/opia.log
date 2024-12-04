@@ -1,3 +1,3 @@
 ﻿  opia.c
-C:\Users\BIA\Downloads\a\malta\opia\opia.c(61,25): warning C4013: 'player_interacao' indefinido; assumindo extern retornando int
-  opia.vcxproj -> C:\Users\BIA\Downloads\a\malta\x64\Debug\opia.exe
+C:\Users\BIA\source\repos\malta\opia\opia.c(75,25): warning C4013: 'player_interacao' indefinido; assumindo extern retornando int
+  opia.vcxproj -> C:\Users\BIA\source\repos\malta\x64\Debug\opia.exe

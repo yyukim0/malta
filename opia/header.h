@@ -30,9 +30,12 @@ typedef struct {
     bool key_up, key_down, key_left, key_right;
     bool chat;
     bool chat_pergunta_estante, chat_resposta_correta_estante, chat_resposta_errada_estante;
-    bool chat_aviso_mesa, mesa_aberta;
+    bool chat_aviso_mesa;
     bool chat_aviso_tv, chat_pergunta_tv, chat_para_tv, chat_resposta_errada_tv, chat_resposta_correta_tv;
-    bool chave;
+    bool chave, chave_banheira;
+    bool chat2;
+    bool chat_aviso_estante2, chat_aviso_abajur, segundo_chat_aviso_abajur, chat_aviso_relogio, chat_aviso_retrato, segundo_chat_aviso_retrato, chat_aviso_banheira;
+    bool chat_aviso_porta_sem_chave, chat_aviso_banheira_com_chave, chat_resposta_errada_porta, chat_pergunta_porta, endgame;
     bool mapa1, mapa2;
 } GameState;
 

@@ -65,6 +65,7 @@ void init_allegro(GameAssets* assets) {
     assets->fotos = al_load_bitmap("./fotos.png");
     assets->tapete2 = al_load_bitmap("./tapete2.png");
     assets->panela = al_load_bitmap("./panela.png");
+    assets->tela_final_beta = al_load_bitmap("./telaFinal(beta).png");
 
 
     assets->event_queue = al_create_event_queue();
@@ -122,6 +123,7 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->portaretrato);
     al_destroy_bitmap(assets->tapete2);
     al_destroy_bitmap(assets->relogio);
+    al_destroy_bitmap(assets->tela_final_beta);
 }
 
 // Função para inicializar o estado do jogo
@@ -485,10 +487,6 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         if (state->chat_pergunta_tv) {
 
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 440, 525, 0, "log de 9 na base 3");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 580, 0, "3");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 580, 0, "4");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 500, 620, 0, "5");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 900, 620, 0, "2");
         }
     }
     else if (state->mapa2) {
@@ -533,6 +531,81 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         al_draw_bitmap_region(assets->mainCharacter, 100 * (int)character->frame, character->frame_y, 90, 128, state->pos_x, state->pos_y, 0);
         al_draw_scaled_bitmap(assets->banheira, 0, 0, al_get_bitmap_width(assets->banheira), al_get_bitmap_height(assets->banheira),
             765, 460, al_get_bitmap_width(assets->banheira) * 0.37, al_get_bitmap_height(assets->banheira) * 0.37, 0);
+
+        // Desenha a chat box 
+        if (state->chat2) {
+            al_draw_scaled_bitmap(assets->chat_box, 0, 0, al_get_bitmap_width(assets->chat_box), al_get_bitmap_height(assets->chat_box),
+                225, 500, al_get_bitmap_width(assets->chat_box) * 1.25, al_get_bitmap_height(assets->chat_box) * 1.25, 0);
+        }
+
+        //interação com a estante
+        if (state->chat_aviso_estante2) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "tem um papel jogado, parece dizer");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "\"Sou o guardiao do escuro, mas,");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "com um toque, faco as sombras");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 640, 0, "dancarem.\"");
+        }
+
+        //interação com o abajur
+        if (state->chat_aviso_abajur) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "tem uma carta de baixo do abajur.");;
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "que estranho!");
+        }
+
+        if (state->segundo_chat_aviso_abajur) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "\"Lembrar:");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "1. comprar pilhas para o relogio");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "2. consertar o quadro do lado da");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 640, 0, "porta.\"");
+        }
+
+        //interação com a relogio
+        if (state->chat_aviso_relogio) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "o relogio esta sem pilha. Os dois");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ponteiros estao parados no mesmo");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "lugar, no numero 11");
+        }
+
+        //interação com a relogio
+        if (state->chat_aviso_retrato) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Tem a foto de alguem aqui. Não");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "consigo ver porque o rosto esta");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "manchado");
+        }
+
+        //interação com a porta retrato
+        if (state->segundo_chat_aviso_retrato) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Tem algo atras da foto... parece");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ser um numero. Acho que é -3");
+        }
+
+        //interação com a banheira
+        if (state->chat_aviso_banheira) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Que nojo. O que e isso preto?");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "Ah, parece ter uma chave boiando");
+        }
+
+        if (state->chat_aviso_banheira_com_chave) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Que coisa preta e essa?");
+        }
+
+        //interação com a porta
+        if (state->chat_aviso_porta_sem_chave) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Preciso de um numero e uma chave");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "para abrir");
+        }
+
+        if (state->chat_pergunta_porta) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Qual o numero que eu devo por?");
+        }
+
+        if (state->chat_resposta_errada_porta) {
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Parece que a resposta esta errada!");
+        }
+
+        if (state->endgame) {
+            al_draw_bitmap_region(assets->tela_final_beta, 0, 0, 1280, 720, 0, 50, 0);
+        }
     }
 }
 
