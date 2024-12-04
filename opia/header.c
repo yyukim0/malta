@@ -585,7 +585,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         //interação com a porta retrato
         if (state->segundo_chat_aviso_retrato) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Tem algo atras da foto... parece");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ser um numero. Acho que é -(3)");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ser um numero. Acho que é -3");
         }
 
         //interação com a banheira

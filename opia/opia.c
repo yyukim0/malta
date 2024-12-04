@@ -125,6 +125,7 @@ int main(void) {
                             state.chat_resposta_correta_tv = false;
                             state.chat_resposta_errada_tv = false;
                             state.chat_aviso_tv = false;
+                            str[0] = '\0';
                         }
                     }
                     //interação da estante
