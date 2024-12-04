@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\BIA\\source\\repos\\malta\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|solutionrelative:opia\\header.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|solutionrelative:opia\\header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|C:\\Users\\BIA\\source\\repos\\malta\\opia\\opia.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|solutionrelative:opia\\opia.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|solutionrelative:opia\\header.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{870B0404-CEFA-4544-BBB2-AE661499D839}|opia\\opia.vcxproj|solutionrelative:opia\\header.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,29 +27,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "header.h",
-              "DocumentMoniker": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.h",
-              "RelativeDocumentMoniker": "opia\\header.h",
-              "ToolTip": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.h",
-              "RelativeToolTip": "opia\\header.h",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAACUAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-11-18T16:18:26.047Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "header.c",
               "DocumentMoniker": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.c",
               "RelativeDocumentMoniker": "opia\\header.c",
               "ToolTip": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.c",
               "RelativeToolTip": "opia\\header.c",
-              "ViewState": "AgIAANwBAAAAAAAAAAAAAOgBAABtAAAAAAAAAA==",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAgwHkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-11-18T16:14:53.472Z",
-              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "header.h",
+              "DocumentMoniker": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.h",
+              "RelativeDocumentMoniker": "opia\\header.h",
+              "ToolTip": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.h",
+              "RelativeToolTip": "opia\\header.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAACTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-11-18T16:18:26.047Z",
               "EditorCaption": ""
             },
             {
@@ -60,7 +58,7 @@
               "RelativeDocumentMoniker": "opia\\opia.c",
               "ToolTip": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\opia.c",
               "RelativeToolTip": "opia\\opia.c",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAAAGcAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAADIBAAAAAAAAAAAAADkBAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-11-18T16:10:54.636Z",
               "EditorCaption": ""

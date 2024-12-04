@@ -23,6 +23,9 @@ void init_allegro(GameAssets* assets) {
     assets->timer = al_create_timer(1.0 / 30.0);
 
     // Carregando imagens
+    assets->panela_selected = al_load_bitmap("./panela_selected.png");
+    assets->soco_selected = al_load_bitmap("./soco_selected.png");
+    assets->esquivar_selected = al_load_bitmap("./esquivar_selected.png");
     assets->cama = al_load_bitmap("./cama.png");
     assets->tv = al_load_bitmap("./televisao.png");
     assets->mainCharacter = al_load_bitmap("./mc - precisamos decidir um nome.png");
@@ -66,6 +69,7 @@ void init_allegro(GameAssets* assets) {
     assets->tapete2 = al_load_bitmap("./tapete2.png");
     assets->panela = al_load_bitmap("./panela.png");
     assets->tela_final_beta = al_load_bitmap("./telaFinal(beta).png");
+    assets->dead_scene = al_load_bitmap("./dead scene.png");
 
 
     assets->event_queue = al_create_event_queue();
@@ -78,6 +82,10 @@ void init_allegro(GameAssets* assets) {
 
 // Função para limpar os recursos
 void destroy_assets(GameAssets* assets) {
+    al_destroy_bitmap(assets->soco_selected);
+    al_destroy_bitmap(assets->dead_scene);
+    al_destroy_bitmap(assets->esquivar_selected);
+    al_destroy_bitmap(assets->panela_selected);
     al_destroy_bitmap(assets->menu_start);
     al_destroy_bitmap(assets->chat_box);
     al_destroy_bitmap(assets->parede_cima);
@@ -489,7 +497,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 440, 525, 0, "log de 9 na base 3");
         }
     }
-    else if (state->mapa2) {
+    else if (state->mapa2 && !state->batalha) {
         al_clear_to_color(al_map_rgb(167, 167, 167));
         al_draw_bitmap_region(assets->bg_sala2, -30, 0, 1280, 720, 0, 50, 0);
         al_draw_bitmap_region(assets->parede_cima_sala2, 0, 0, 503, 145, 415, 146, 0);
@@ -602,10 +610,6 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         if (state->chat_resposta_errada_porta) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Parece que a resposta esta errada!");
         }
-
-        if (state->endgame) {
-            al_draw_bitmap_region(assets->tela_final_beta, 0, 0, 1280, 720, 0, 50, 0);
-        }
     }
 }
 
@@ -616,5 +620,77 @@ int player_interacao(Character* character, GameState* state, GameAssets* assets,
     return (dx_estante * dx_estante + dy_estante * dy_estante) <= (range_interacao * range_interacao);
 }
 
+void interacao_player_batalha(GameState* state, GameAssets* assets, int keycode, int* boss_life, int* player_life) {
+    static bool show_damage_text = false; // Controla a exibição do texto de dano
+    static int damage_timer = 0;         // Temporizador para controlar por quanto tempo o texto aparece
 
+    // Verifica se o chefe ainda tem vida
+    if (*boss_life > 0) {
 
+        // Alterna o estado com base na tecla pressionada
+        if (keycode == ALLEGRO_KEY_RIGHT) {
+            if (state->panela) {
+                state->panela = false;
+                state->esquiva = true;
+            }
+        }
+        else if (keycode == ALLEGRO_KEY_LEFT) {
+            if (state->esquiva) {
+                state->esquiva = false;
+                state->panela = true;
+            }
+        }
+        else if (keycode == ALLEGRO_KEY_Z) {
+            if (state->panela) {
+                *boss_life -= 20; // Reduz a vida do chefe em 20
+
+                // Ativa o texto de dano
+                show_damage_text = true;
+                damage_timer = 40; // Exibe o texto por 40 frames (aproximadamente 1 segundo se 40 FPS)
+
+                *player_life -= 10; // Reduz a vida do jogador em 10
+            }
+            else if (state->esquiva) {
+                // Exibe o texto "Você esquivou" se o estado for esquiva
+                show_damage_text = true;
+                damage_timer = 40; // Exibe o texto por 40 frames (aproximadamente 1 segundo se 40 FPS)
+
+                // Não reduz a vida do jogador
+            }
+        }
+
+        // Atualiza os estados visuais com base no estado ativo
+        if (state->panela) {
+            al_draw_bitmap(assets->panela_selected, 0, 0, 0);
+        }
+        else if (state->esquiva) {
+            al_draw_bitmap(assets->esquivar_selected, 0, 0, 0);
+        }
+
+        // Exibe o texto de dano ou esquiva, conforme o caso
+        if (show_damage_text) {
+            if (state->esquiva) {
+                al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você esquivou!!!");
+            }
+            else {
+                al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você deu 20 de dano!!!");
+            }
+            damage_timer--;
+
+            if (damage_timer <= 0) {
+                show_damage_text = false; // Esconde o texto após o temporizador acabar
+            }
+        }
+    }
+    // Quando a vida do chefe chega a 0 ou menor, exibe a tela final
+    else if (*boss_life <= 0) {
+        al_draw_bitmap(assets->tela_final_beta, 0, 0, 0);
+    }
+    // Quando a vida do jogador chega a 0 ou menor, exibe a cena de morte
+    else if (*player_life <= 0) {
+        al_draw_bitmap(assets->dead_scene, 0, 0, 0);
+    }
+
+    // Atualiza a tela
+    al_flip_display();
+}

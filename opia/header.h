@@ -9,7 +9,7 @@ typedef struct {
     ALLEGRO_BITMAP* mainCharacter;
     ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta;
     ALLEGRO_BITMAP* bg_sala2, * parede_sala2, * parede_baixa_sala2, * parede_canto_direita_sala2, * parede_canto_esquerda_sala2, * parede_cima_sala2, * parede_curta_sala2, * parede_lados_sala2, * porta_sala2, * abajur, * balcao, * banheira, * mesa2, * cadeiradireita, * cadeiraesquerda, * panela, * poca, * portaretrato, * tapete2, * estante2, * cabide, * fotos, * relogio;
-    ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box;
+    ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box, * panela_selected, * soco_selected, * esquivar_selected, * dead_scene;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
 
@@ -22,8 +22,7 @@ typedef struct {
 
 // Struct do Menu, posição
 typedef struct {
-    bool menu;
-    bool start;
+    bool menu, start, soco, panela, esquiva, batalha;
     int pos_x, pos_y;
     int parede_cima_y, parede_baixa_y, parede_esquerda_x, parede_direita_x;
     int parede2_cima_y, parede2_baixa_y, parede2_esquerda_x, parede2_direita_x;
@@ -47,4 +46,4 @@ void handle_menu_interactions(GameState* state, GameAssets* assets, int keycode)
 void draw_game(GameAssets* assets, GameState* state, Character* character);
 
 
-#endif 
+#endif

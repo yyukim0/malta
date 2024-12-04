@@ -42,7 +42,12 @@ int main(void) {
     state.chat_resposta_errada_porta = false;
     state.chat_pergunta_porta = false;
     state.endgame = false;
-
+    state.soco = false;
+    state.panela = false;
+    state.esquiva = false;
+    state.batalha = false;
+    int boss_life = 300;
+    int player_life = 60;
 
     strcpy_s(str, sizeof(str), "");
 
@@ -159,7 +164,7 @@ int main(void) {
                         }
                     }
                 }
-                if (state.mapa2) {
+                if (state.mapa2 && !state.batalha) {
                     //interação da estante
                     if (player_interacao(&character, &state, &assets, 620, 180, 70)) {
                         printf("dentro da interação - estante2\n");
@@ -272,14 +277,22 @@ int main(void) {
                             state.chat_pergunta_porta = false;
                         }
                         if (event.keyboard.keycode == ALLEGRO_KEY_8 && state.chat_pergunta_porta) {
-                            state.chat_pergunta_porta = false;
+                            state.chat_pergunta_porta = true;
                             state.chat_resposta_errada_porta = false;
                             state.endgame = true;
                         }
-                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && (state.endgame || state.chat_resposta_errada_porta)) {
+                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_resposta_errada_porta) {
                             state.chat2 = false;
                             state.chat_resposta_errada_porta = false;
                             str[0] = '\0';
+                        }
+                        if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.endgame) {
+                            state.chat2 = false;
+                            state.chat_resposta_errada_porta = false;
+                            str[0] = '\0';
+                            state.batalha = true;
+                            state.mapa2 = false;
+                            state.panela = true;
                         }
                     }
                 }
@@ -293,8 +306,12 @@ int main(void) {
             if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) state.key_right = false;
         }
 
-        if (!state.menu) {
+        if (!state.menu && !state.batalha) {
             update_position(&character, &state, &assets);
+        }
+
+        if (state.batalha && !state.menu && !state.mapa2) {
+            interacao_player_batalha(&state, &assets, event.keyboard.keycode, &boss_life, &player_life);
         }
 
 
