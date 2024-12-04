@@ -1,3 +1,7 @@
 ﻿  header.c
 C:\Users\BIA\source\repos\malta\opia\header.c(453,23): warning C4101: 'event': variável local não referenciada
+  opia.c
+C:\Users\BIA\source\repos\malta\opia\opia.c(80,25): warning C4013: 'player_interacao' indefinido; assumindo extern retornando int
+C:\Users\BIA\source\repos\malta\opia\opia.c(314,13): warning C4013: 'interacao_player_batalha' indefinido; assumindo extern retornando int
+  Gerando Código...
   opia.vcxproj -> C:\Users\BIA\source\repos\malta\x64\Debug\opia.exe
