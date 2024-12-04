@@ -10,6 +10,7 @@ typedef struct {
     ALLEGRO_BITMAP* bg, * parede_baixa, * parede_esquerda, * parede_direita, * parede_direita_baixo, * parede_esquerda_baixo, * parede_cima, * tv, * cama, * mesa, * estante, * porta, * tela_final_beta;
     ALLEGRO_BITMAP* bg_sala2, * parede_sala2, * parede_baixa_sala2, * parede_canto_direita_sala2, * parede_canto_esquerda_sala2, * parede_cima_sala2, * parede_curta_sala2, * parede_lados_sala2, * porta_sala2, * abajur, * balcao, * banheira, * mesa2, * cadeiradireita, * cadeiraesquerda, * panela, * poca, * portaretrato, * tapete2, * estante2, * cabide, * fotos, * relogio;
     ALLEGRO_BITMAP* menu_start, * menu_controls, * page_controls, * chat_box, * panela_selected, * soco_selected, * esquivar_selected, * dead_scene;
+    ALLEGRO_SAMPLE* musicamenu, * musicaMapa2, * musica_final;
     ALLEGRO_EVENT_QUEUE* event_queue;
 } GameAssets;
 

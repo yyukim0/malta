@@ -4,6 +4,8 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include "header.h"
 
 // Função para inicializar Allegro e os componentes
@@ -13,6 +15,9 @@ void init_allegro(GameAssets* assets) {
     al_init_ttf_addon();
     al_init_image_addon();
     al_install_keyboard();
+    al_install_audio();
+    al_init_acodec_addon();
+    al_reserve_samples(1);
 
     assets->display = al_create_display(1280, 720);
     al_set_window_position(assets->display, 200, 200);
@@ -21,6 +26,10 @@ void init_allegro(GameAssets* assets) {
     assets->fonte_grande = al_load_font("./YumeNikkiTitleScreen.ttf", 50, 0);
     assets->fonte_pequena = al_load_font("./YumeNikkiTitleScreen.ttf", 40, 0);
     assets->timer = al_create_timer(1.0 / 30.0);
+
+    assets->musicamenu = al_load_sample("musicamenu.ogg");
+    assets->musicaMapa2 = al_load_sample("musicaMapa2.ogg");
+    assets->musica_final = al_load_sample("musica_final.ogg");
 
     // Carregando imagens
     assets->panela_selected = al_load_bitmap("./panela_selected.png");
@@ -105,6 +114,10 @@ void destroy_assets(GameAssets* assets) {
     al_destroy_bitmap(assets->estante);
     al_destroy_bitmap(assets->mesa);
     al_destroy_bitmap(assets->porta);
+    al_destroy_sample(assets->musicamenu);
+    al_destroy_sample(assets->musicaMapa2);
+    al_destroy_sample(assets->musica_final);
+    al_uninstall_audio();
 
     //mapa2
     al_destroy_bitmap(assets->bg_sala2);

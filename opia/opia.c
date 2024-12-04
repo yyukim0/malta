@@ -4,6 +4,8 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include "header.h"
 #include <string.h>
 
@@ -57,6 +59,7 @@ int main(void) {
     while (true) {
         ALLEGRO_EVENT event;
         al_wait_for_event(assets.event_queue, &event);
+        al_play_sample(assets.musicamenu, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             break;
@@ -165,6 +168,8 @@ int main(void) {
                             printf("dentro da interação - PORTA\n");
                             state.mapa1 = false;
                             state.mapa2 = true;
+                            al_stop_samples();
+                            al_play_sample(assets.musicaMapa2, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
                         }
                     }
                 }
@@ -284,6 +289,7 @@ int main(void) {
                             state.chat_pergunta_porta = true;
                             state.chat_resposta_errada_porta = false;
                             state.endgame = true;
+
                         }
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && state.chat_resposta_errada_porta) {
                             state.chat2 = false;
@@ -297,7 +303,10 @@ int main(void) {
                             state.batalha = true;
                             state.mapa2 = false;
                             state.panela = true;
+                            al_stop_samples();
+                            al_play_sample(assets.musica_final, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
                         }
+
                     }
                 }
             }
@@ -318,6 +327,9 @@ int main(void) {
             interacao_player_batalha(&state, &assets, event.keyboard.keycode, &boss_life, &player_life);
         }
 
+        if (state.batalha == true) {
+           
+        }
 
         draw_game(&assets, &state, &character);
         exibir_texto_centralizado(&assets); // Garante que o texto sempre seja desenhado
