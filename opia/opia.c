@@ -103,7 +103,7 @@ int main(void) {
                             state.chat_aviso_tv = false;
                             state.chat_para_tv = true;
                         }
-                        if (event.keyboard.keycode == ALLEGRO_KEY_4 || event.keyboard.keycode == ALLEGRO_KEY_3 ||
+                        if (event.keyboard.keycode == ALLEGRO_KEY_4 || event.keyboard.keycode == ALLEGRO_KEY_2 ||
                             event.keyboard.keycode == ALLEGRO_KEY_1 || event.keyboard.keycode == ALLEGRO_KEY_5 ||
                             event.keyboard.keycode == ALLEGRO_KEY_6 || event.keyboard.keycode == ALLEGRO_KEY_7 ||
                             event.keyboard.keycode == ALLEGRO_KEY_8 || event.keyboard.keycode == ALLEGRO_KEY_9
@@ -113,8 +113,8 @@ int main(void) {
                             state.chat_pergunta_tv = false;
                             state.chat_para_tv = true;
                         }
-                        else if (event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_tv) {
-                            printf("Você apertou 4\n");
+                        else if (event.keyboard.keycode == ALLEGRO_KEY_3 && state.chat_pergunta_tv) {
+                            printf("Você apertou 3\n");
                             state.chat_resposta_correta_tv = true;
                             state.chat_resposta_errada_tv = false;
                             state.chat_pergunta_tv = false;
@@ -136,12 +136,15 @@ int main(void) {
                             state.chat_pergunta_estante = true;
                             state.chat = true;
                         }
-                        if ((event.keyboard.keycode == ALLEGRO_KEY_1 || event.keyboard.keycode == ALLEGRO_KEY_4 && state.chat_pergunta_tv) ||
-                            (event.keyboard.keycode == ALLEGRO_KEY_3) && state.chat_pergunta_estante) {
+                        if (event.keyboard.keycode == ALLEGRO_KEY_1 || event.keyboard.keycode == ALLEGRO_KEY_4 ||
+                            event.keyboard.keycode == ALLEGRO_KEY_2 || event.keyboard.keycode == ALLEGRO_KEY_5 ||
+                            event.keyboard.keycode == ALLEGRO_KEY_6 || event.keyboard.keycode == ALLEGRO_KEY_7 ||
+                            event.keyboard.keycode == ALLEGRO_KEY_8 || event.keyboard.keycode == ALLEGRO_KEY_9 
+                            && state.chat_pergunta_estante) {
                             state.chat_resposta_errada_estante = true;
                             state.chat_pergunta_estante = false;;
                         }
-                        if (event.keyboard.keycode == ALLEGRO_KEY_2 && state.chat_pergunta_estante) {
+                        if (event.keyboard.keycode == ALLEGRO_KEY_3 && state.chat_pergunta_estante) {
                             printf("Você apertou 2\n");
                             state.chat_resposta_correta_estante = true;
                             state.chat_pergunta_estante = false;

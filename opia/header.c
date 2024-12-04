@@ -494,7 +494,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
 
         if (state->chat_pergunta_tv) {
 
-            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 440, 525, 0, "log de 9 na base 3");
+            al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 440, 525, 0, "log de 729 na base 9");
         }
     }
     else if (state->mapa2 && !state->batalha) {
@@ -564,14 +564,15 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "\"Lembrar:");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "1. comprar pilhas para o relogio");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "2. consertar o quadro do lado da");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 640, 0, "porta.\"");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 640, 0, "porta.\" Alias, talvez fosse");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 680, 0, "legal pegar uma dessas panelas");
         }
 
         //interação com a relogio
         if (state->chat_aviso_relogio) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "o relogio esta sem pilha. Os dois");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ponteiros estao parados no mesmo");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "lugar, no numero 11");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "lugar, no numero 12");
         }
 
         //interação com a relogio
@@ -584,7 +585,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         //interação com a porta retrato
         if (state->segundo_chat_aviso_retrato) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "Tem algo atras da foto... parece");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ser um numero. Acho que é -3");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ser um numero. Acho que é -(3)");
         }
 
         //interação com a banheira

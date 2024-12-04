@@ -32,7 +32,7 @@
               "RelativeDocumentMoniker": "opia\\header.c",
               "ToolTip": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.c",
               "RelativeToolTip": "opia\\header.c",
-              "ViewState": "AgIAAG8AAAAAAAAAAAAgwHkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACkCAAAAAAAAAAAAADYCAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-11-18T16:14:53.472Z",
               "EditorCaption": ""
@@ -45,7 +45,7 @@
               "RelativeDocumentMoniker": "opia\\header.h",
               "ToolTip": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\header.h",
               "RelativeToolTip": "opia\\header.h",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAsAAACTAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAAsAAACTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-11-18T16:18:26.047Z",
               "EditorCaption": ""
@@ -58,9 +58,10 @@
               "RelativeDocumentMoniker": "opia\\opia.c",
               "ToolTip": "C:\\Users\\BIA\\source\\repos\\malta\\opia\\opia.c",
               "RelativeToolTip": "opia\\opia.c",
-              "ViewState": "AgIAADIBAAAAAAAAAAAAADkBAABmAAAAAAAAAA==",
+              "ViewState": "AgIAAOEAAAAAAAAAAAAAADkBAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-18T16:10:54.636Z"
+              "WhenOpened": "2024-11-18T16:10:54.636Z",
+              "EditorCaption": ""
             }
           ]
         }
