@@ -177,7 +177,7 @@ int main(void) {
                 }
                 if (state.mapa2 && !state.batalha) {
                     //interação da estante
-                    if (player_interacao(&character, &state, &assets, 620, 180, 70)) {
+                    if (player_interacao(&character, &state, &assets, 620, 200, 60)) {
                         printf("dentro da interação - estante2\n");
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_estante2) {
                             state.chat_aviso_estante2 = true;
@@ -238,7 +238,7 @@ int main(void) {
                             state.segundo_chat_aviso_retrato = false;
                         }
                     }
-                    if (player_interacao(&character, &state, &assets, 700, 210, 80)) {
+                    if (player_interacao(&character, &state, &assets, 700, 210, 40)) {
                         printf("dentro da interação - panela\n");
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_panela) {
                             state.chat_aviso_panela = true;
@@ -274,7 +274,7 @@ int main(void) {
                     }
 
                     //interação da porta
-                    if (player_interacao(&character, &state, &assets, 461, 178, 80)) {
+                    if (player_interacao(&character, &state, &assets, 461, 178, 40)) {
                         printf("dentro da interação - porta2\n");
                         if (event.keyboard.keycode == ALLEGRO_KEY_Z && !state.chat_aviso_porta_sem_chave && state.chave_banheira == false) {
                             state.chat_aviso_porta_sem_chave = true;

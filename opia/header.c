@@ -596,7 +596,7 @@ void draw_game(GameAssets* assets, GameState* state, Character* character) {
         if (state->chat_aviso_relogio) {
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 520, 0, "o relogio esta sem pilha. Os dois");
             al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 560, 0, "ponteiros estao parados no mesmo");
-            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "lugar, no numero 12");
+            al_draw_text(assets->fonte_pequena, al_map_rgb(255, 255, 255), 420, 600, 0, "lugar, no numero 11");
         }
 
         //interação com a relogio
@@ -695,10 +695,10 @@ void interacao_player_batalha(GameState* state, GameAssets* assets, int keycode,
         // Exibe o texto de dano ou esquiva, conforme o caso
         if (show_damage_text) {
             if (state->esquiva) {
-                al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você esquivou!!!");
+                al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Voce esquivou!!!");
             }
             else {
-                al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você deu 20 de dano!!!");
+                al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Voce deu 20 de dano!!!");
             }
             damage_timer--;
 
@@ -765,10 +765,10 @@ void interacao_player_batalha_sem_panela(GameState* state, GameAssets* assets, i
             // Exibe o texto de dano ou esquiva, conforme o caso
             if (show_damage_text) {
                 if (state->esquiva) {
-                    al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você esquivou!!!");
+                    al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Voce esquivou!!!");
                 }
                 else {
-                    al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Você deu 5 de dano!!!");
+                    al_draw_text(assets->fonte_grande, al_map_rgb(255, 255, 255), 170, 20, 0, "Voce deu 5 de dano!!!");
                 }
                 damage_timer--;
 
